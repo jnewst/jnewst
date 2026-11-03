@@ -45,11 +45,15 @@ h2{font-size:1.8rem;margin:0 0 6px}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
 .filters button{font:inherit;font-size:.9rem;padding:5px 15px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;cursor:pointer}
 .filters button[aria-pressed=true]{background:var(--grad);border-color:#3d6bff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit}
-.card .poster{aspect-ratio:16/9;display:grid;place-items:center;font-size:2rem;transition:filter .2s}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));grid-auto-flow:dense;gap:16px}
+.card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit}
+.card.h{grid-column:span 2}
+.card .poster{position:relative;aspect-ratio:9/16;overflow:hidden;display:grid;place-items:center;transition:filter .2s}
+.card.h .poster{aspect-ratio:auto;flex:1;min-height:170px}
+.card .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .play{position:relative;z-index:1;width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.5);display:grid;place-items:center;font-size:1rem;padding-left:3px}
 .card:hover .poster{filter:brightness(1.3)}
-.card .t{padding:14px 16px}
+.card .t{padding:12px 14px}
 .card b{display:block}
 .card p{margin:4px 0 8px;color:var(--mute);font-size:.92rem}
 .card .tags{margin-top:8px}
@@ -152,6 +156,9 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 <script>
 // ใส่ลิงก์ Vimeo ของแต่ละคลิปที่ช่อง y เช่น y:"https://vimeo.com/123456789" (เรียงตาม Showcase) ถ้ายังไม่ใส่ จะเปิดคลิปจาก Showcase รวมแทน
 var works=[
+ {t:"งานอีเวนต์ | BioActive Plus - Meen",c:"งานอีเวนต์",y:"https://vimeo.com/1232305532",g:"#000,#0f3a9c"},
+ {t:"งานอีเวนต์ | BioActive Plus - NamtanFilm",c:"งานอีเวนต์",y:"https://vimeo.com/1232305531",g:"#050a1f,#2b5cff"},
+ {t:"งานอีเวนต์ | BioActive Plus - Becky",c:"งานอีเวนต์",y:"https://vimeo.com/1232305533",g:"#000,#1741c4"},
  {t:"AI | ปักหมุดโคราช",c:"AI",y:"https://vimeo.com/1232313794",g:"#000,#1741c4"},
  {t:"วิดีโอความรู้ | หมอหญิง ลบรอยสัก",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307410",g:"#06143f,#3d6bff"},
  {t:"วิดีโอความรู้ | หมอแบงค์ สอนดูแลผิว",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307409",g:"#0b1a4d,#5b8cff"},
@@ -165,9 +172,6 @@ var works=[
  {t:"รีวิว | คุณยูนิฟ โปรแกรมฉีด Neauvia",c:"รีวิว",y:"https://vimeo.com/1232306421",g:"#000,#1741c4"},
  {t:"รีวิว | คุณอั๋น ลบรอยสัก",c:"รีวิว",y:"https://vimeo.com/1232306419",g:"#06143f,#3d6bff"},
  {t:"โฆษณา | ลบแผลเป็น",c:"โฆษณา",y:"https://vimeo.com/1232306418",h:1,g:"#0b1a4d,#5b8cff"},
- {t:"งานอีเวนต์ | BioActive Plus - Meen",c:"งานอีเวนต์",y:"https://vimeo.com/1232305532",g:"#000,#0f3a9c"},
- {t:"งานอีเวนต์ | BioActive Plus - NamtanFilm",c:"งานอีเวนต์",y:"https://vimeo.com/1232305531",g:"#050a1f,#2b5cff"},
- {t:"งานอีเวนต์ | BioActive Plus - Becky",c:"งานอีเวนต์",y:"https://vimeo.com/1232305533",g:"#000,#1741c4"},
  {t:"สัมภาษณ์ | ผู้บริหารโครงการ K Grand Ville",c:"สัมภาษณ์",y:"https://vimeo.com/982304860",g:"#06143f,#3d6bff"},
  {t:"คอนเทนต์คลินิก | One Direction to erase the marks",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1237508449",g:"#0b1a4d,#5b8cff"},
  {t:"คอนเทนต์คลินิก | คุณเซ้นต์",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242687469",g:"#000,#0f3a9c"}
@@ -179,14 +183,15 @@ var cur="ทั้งหมด",F=document.getElementById("filters"),G=document.
 function render(){
  F.innerHTML="";cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){cur=c;render()};F.appendChild(b)});
  G.innerHTML="";works.forEach(function(w){if(cur!=="ทั้งหมด"&&w.c!==cur)return;
-  var a=document.createElement("button");a.className="card";var g=w.g.split(",");
-  a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">▶</div><div class="t"><b>'+w.t+'</b><div class="tags"><span>ตัดต่อ</span><span>ถ่ายทำ</span></div></div>';
+  var a=document.createElement("button");a.className="card"+(w.h?" h":"");var g=w.g.split(",");
+  a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">'+(w.th?'<img src="'+w.th+'" alt="" loading="lazy">':'')+'<span class="play">▶</span></div><div class="t"><b>'+w.t+'</b><div class="tags"><span>ตัดต่อ</span><span>ถ่ายทำ</span></div></div>';
   a.onclick=function(){var vt=!!w.y&&!w.h;D.style.width=vt?"min(calc(88vh*9/16),94vw)":"";B.className="box"+(vt?" v":"");B.innerHTML=emb(w.y||SHOW);document.getElementById("ext").href=w.y||SHOW;D.showModal()};
   G.appendChild(a)})}
 document.getElementById("close").onclick=function(){D.close()};
 D.addEventListener("close",function(){B.innerHTML=""});
 D.addEventListener("click",function(e){if(e.target===D)D.close()});
-render();
+function thumbs(){works.forEach(function(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)/);if(!m||w.tq)return;w.tq=1;fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+m[1])+"&width=640").then(function(r){return r.json()}).then(function(j){if(j&&j.thumbnail_url){w.th=j.thumbnail_url;render()}}).catch(function(){})})}
+render();thumbs();
 </script>
 </body>
 </html>
