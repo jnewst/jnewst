@@ -72,6 +72,7 @@ footer{padding:48px 0;color:var(--mute);font-size:.85rem}
 dialog{border:0;padding:0;background:#000;width:min(960px,94vw);border-radius:6px;position:fixed}
 dialog::backdrop{background:rgba(0,3,15,.85)}
 dialog .box{aspect-ratio:16/9;display:grid;place-items:center;color:#fff;text-align:center;padding:20px}
+dialog .box.v{aspect-ratio:9/16;max-height:88vh;padding:0}
 dialog iframe{width:100%;height:100%;border:0}
 dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;color:#000;border:0;border-radius:4px;padding:2px 12px;cursor:pointer;z-index:2}
 @media(max-width:720px){.about{grid-template-columns:1fr}nav a{margin-left:12px}.steps div{border-right:0;border-bottom:1px solid var(--line)}}
@@ -86,16 +87,6 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
   <h1>ตัดต่อ ถ่ายทำ<br>และเก็บรายละเอียดทุกเฟรม</h1>
   <p>สุทธิวัฒน์ จิตจำนงค์ Video Editor / Videographer ในกรุงเทพฯ ทำวิดีโอให้คลินิกความงามและอสังหาริมทรัพย์ ตั้งแต่วางภาพ ถ่าย ตัดต่อ ไปจนถึงเกรดสีและส่งไฟล์ใช้งานจริง</p>
   <a class="btn" href="#works">ดูผลงาน</a><a class="btn o" href="#contact">ติดต่อจ้างงาน</a>
-  <div class="reel">
-    <div class="screen">
-      <iframe src="https://vimeo.com/showcase/12436496/embed" title="Jnew Portfolio" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen loading="lazy"></iframe>
-      
-    </div>
-    <div class="tl" aria-hidden="true">
-      <div class="ruler"><span>00:00</span><span>00:15</span><span>00:30</span><span>00:45</span><span>01:00</span></div>
-      <div class="track"><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><div class="head"></div></div>
-    </div>
-  </div>
 </div>
 
 <section id="services">
@@ -111,7 +102,7 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 
 <section id="works">
   <h2>ผลงาน</h2>
-  <p class="sub">คลิกที่การ์ดเพื่อดูวิดีโอ</p>
+  <p class="sub">คลิกที่การ์ดเพื่อดูวิดีโอ เรียงตามคลังผลงานบน Vimeo</p>
   <div class="filters" id="filters"></div>
   <div class="grid" id="grid"></div>
 </section>
@@ -156,19 +147,33 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 <footer>© 2026 สุทธิวัฒน์ จิตจำนงค์ · กรุงเทพฯ</footer>
 </div>
 
-<dialog id="dlg" aria-label="เล่นวิดีโอ"><button id="close">ปิด</button><div class="box" id="box"></div></dialog>
+<dialog id="dlg" aria-label="เล่นวิดีโอ"><button id="close">ปิด</button><div class="box" id="box"></div><a id="ext" target="_blank" rel="noopener" style="display:block;padding:8px 14px;color:#9aa8d0;font-size:.85rem;text-align:center">เล่นไม่ได้? เปิดดูบน Vimeo</a></dialog>
 
 <script>
-// ช่อง y ใส่ลิงก์วิดีโอเต็ม (YouTube หรือ Vimeo) หรือ ID ของ YouTube ก็ได้ เช่น y:"https://vimeo.com/123456789"
+// ใส่ลิงก์ Vimeo ของแต่ละคลิปที่ช่อง y เช่น y:"https://vimeo.com/123456789" (เรียงตาม Showcase) ถ้ายังไม่ใส่ จะเปิดคลิปจาก Showcase รวมแทน
 var works=[
- {t:"โปรโมทเลเซอร์",c:"คลินิก",d:"วิดีโอแนวสะอาดสำหรับบริการเลเซอร์ ใช้แสงและผ้าสีขาวคุมอารมณ์ภาพ",tg:["ถ่ายทำ","ตัดต่อ","เกรดสี"],y:"",g:"#000,#1741c4"},
- {t:"รีวิวคอร์สผิวใส",c:"คลินิก",d:"ภาพก่อนหลังและคลิปรีวิวแนวตั้งสำหรับโซเชียล",tg:["คลิปแนวตั้ง","ตัดต่อ"],y:"",g:"#06143f,#3d6bff"},
- {t:"เกรดสีคลินิกโทนสะอาด",c:"เกรดสี",d:"เกรดฟุตเทจ S-Log3 ใน DaVinci Resolve ให้ผิวเป็นธรรมชาติ",tg:["DaVinci Resolve","เกรดสี"],y:"",g:"#0b1a4d,#8fb0ff"},
- {t:"โครงการบ้าน",c:"อสังหาฯ",d:"วิดีโอแนะนำโครงการบ้านและบรรยากาศภายในโครงการ",tg:["ถ่ายทำ","ตัดต่อ"],y:"",g:"#000,#0f3a9c"},
- {t:"วิดีโอ AI",c:"AI Video",d:"สร้างภาพและคลิปด้วย AI แล้วนำมาตัดต่อรวมเป็นวิดีโอโปรโมท",tg:["AI","ตัดต่อ"],y:"",g:"#050a1f,#5b3df0"},
- {t:"โมชันกราฟิกและข้อความบนจอ",c:"โมชัน",d:"ไตเติล ข้อความ และอินโฟกราฟิกใน After Effects",tg:["After Effects","โมชัน"],y:"",g:"#000,#2b5cff"}
+ {t:"AI | ปักหมุดโคราช",c:"AI",y:"https://vimeo.com/1232313794",g:"#000,#1741c4"},
+ {t:"วิดีโอความรู้ | หมอหญิง ลบรอยสัก",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307410",g:"#06143f,#3d6bff"},
+ {t:"วิดีโอความรู้ | หมอแบงค์ สอนดูแลผิว",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307409",g:"#0b1a4d,#5b8cff"},
+ {t:"วิดีโอความรู้ | หมอหนุ่ม ก่อนลบรอยสัก ควรทำอย่างไร",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307408",g:"#000,#0f3a9c"},
+ {t:"วิดีโอความรู้ | หมอปรัช การเลือกหัวเลเซอร์ลบรอยสัก",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307411",g:"#050a1f,#2b5cff"},
+ {t:"วิดีโอแนะนำโครงการ | บ้านเดี่ยวติดสวน",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306946",g:"#000,#1741c4"},
+ {t:"วิดีโอแนะนำโครงการ | แนะนำโครงการ",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306945",g:"#06143f,#3d6bff"},
+ {t:"รีวิว | คุณซานนิ ลบรอยแผลเป็น",c:"รีวิว",y:"https://vimeo.com/1232306470",g:"#0b1a4d,#5b8cff"},
+ {t:"โฆษณา | ลบรอยสัก",c:"โฆษณา",y:"https://vimeo.com/1232306469",h:1,g:"#000,#0f3a9c"},
+ {t:"โฆษณา | ลบรอยแดงสิว",c:"โฆษณา",y:"https://vimeo.com/1232306462",h:1,g:"#050a1f,#2b5cff"},
+ {t:"รีวิว | คุณยูนิฟ โปรแกรมฉีด Neauvia",c:"รีวิว",y:"https://vimeo.com/1232306421",g:"#000,#1741c4"},
+ {t:"รีวิว | คุณอั๋น ลบรอยสัก",c:"รีวิว",y:"https://vimeo.com/1232306419",g:"#06143f,#3d6bff"},
+ {t:"โฆษณา | ลบแผลเป็น",c:"โฆษณา",y:"https://vimeo.com/1232306418",h:1,g:"#0b1a4d,#5b8cff"},
+ {t:"งานอีเวนต์ | BioActive Plus - Meen",c:"งานอีเวนต์",y:"https://vimeo.com/1232305532",g:"#000,#0f3a9c"},
+ {t:"งานอีเวนต์ | BioActive Plus - NamtanFilm",c:"งานอีเวนต์",y:"https://vimeo.com/1232305531",g:"#050a1f,#2b5cff"},
+ {t:"งานอีเวนต์ | BioActive Plus - Becky",c:"งานอีเวนต์",y:"https://vimeo.com/1232305533",g:"#000,#1741c4"},
+ {t:"สัมภาษณ์ | ผู้บริหารโครงการ K Grand Ville",c:"สัมภาษณ์",y:"https://vimeo.com/982304860",g:"#06143f,#3d6bff"},
+ {t:"คอนเทนต์คลินิก | One Direction to erase the marks",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1237508449",g:"#0b1a4d,#5b8cff"},
+ {t:"คอนเทนต์คลินิก | คุณเซ้นต์",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242687469",g:"#000,#0f3a9c"}
 ];
-function emb(u){if(!u)return"";var s,m;if(m=u.match(/vimeo\.com\/showcase\/(\d+)/i)){s="https://vimeo.com/showcase/"+m[1]+"/embed";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}if(m=u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([a-z0-9]+))?/i)){s="https://player.vimeo.com/video/"+m[1]+"?autoplay=1"+(m[2]?"&h="+m[2]:"")}else if(m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)){s="https://www.youtube.com/embed/"+m[1]+"?autoplay=1"}else if(/^[\w-]{11}$/.test(u)){s="https://www.youtube.com/embed/"+u+"?autoplay=1"}else return"";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}
+var SHOW="https://vimeo.com/showcase/12436496";
+function emb(u){if(!u)return"";var s,m;if(m=u.match(/vimeo\.com\/showcase\/(\d+)\/?(?:[?#].*)?$/i)){s="https://vimeo.com/showcase/"+m[1]+"/embed";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}if(m=u.match(/vimeo\.com\/(?:showcase\/\d+\/)?(?:video\/)?(\d+)(?:\/([a-z0-9]+))?/i)){s="https://player.vimeo.com/video/"+m[1]+"?autoplay=1"+(m[2]?"&h="+m[2]:"")}else if(m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)){s="https://www.youtube.com/embed/"+m[1]+"?autoplay=1"}else if(/^[\w-]{11}$/.test(u)){s="https://www.youtube.com/embed/"+u+"?autoplay=1"}else return"";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}
 var cats=["ทั้งหมด"].concat(works.map(function(w){return w.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
 var cur="ทั้งหมด",F=document.getElementById("filters"),G=document.getElementById("grid"),D=document.getElementById("dlg"),B=document.getElementById("box");
 function render(){
@@ -176,7 +181,7 @@ function render(){
  G.innerHTML="";works.forEach(function(w){if(cur!=="ทั้งหมด"&&w.c!==cur)return;
   var a=document.createElement("button");a.className="card";var g=w.g.split(",");
   a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">▶</div><div class="t"><b>'+w.t+'</b><div class="tags"><span>ตัดต่อ</span><span>ถ่ายทำ</span></div></div>';
-  a.onclick=function(){B.innerHTML=emb(w.y)||'<span>ยังไม่ได้ใส่ลิงก์วิดีโอ<br>แก้ค่า y ของผลงานนี้ในไฟล์ให้เป็นลิงก์ YouTube หรือ Vimeo</span>';D.showModal()};
+  a.onclick=function(){var vt=!!w.y&&!w.h;D.style.width=vt?"min(calc(88vh*9/16),94vw)":"";B.className="box"+(vt?" v":"");B.innerHTML=emb(w.y||SHOW);document.getElementById("ext").href=w.y||SHOW;D.showModal()};
   G.appendChild(a)})}
 document.getElementById("close").onclick=function(){D.close()};
 D.addEventListener("close",function(){B.innerHTML=""});
