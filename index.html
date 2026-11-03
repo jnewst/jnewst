@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สุทธิวัฒน์ จิตจำนงค์ | Video Editor & Videographer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600;700&display=swap">
+<style>
+:root{--ink:#eef2ff;--mute:#9aa8d0;--line:#1f2f66;--panel:#0a1330;--blue:#4f86ff;--grad:linear-gradient(135deg,#000 0%,#06143f 45%,#1741c4 100%);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#000;color:var(--ink);font-family:"Anuphan",system-ui,sans-serif;line-height:1.7}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(900px 600px at 85% -5%,#1741c4aa,transparent 60%),radial-gradient(700px 500px at 0% 40%,#0a2a8a55,transparent 60%);z-index:-1}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+header b{font-weight:700}
+nav a{margin-left:20px;text-decoration:none;color:var(--mute);font-size:.95rem}
+nav a:hover{color:#fff}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.hero{padding:56px 0 28px}
+h1{font-size:clamp(2.4rem,7vw,5rem);line-height:1.1;margin:0 0 16px;font-weight:700;letter-spacing:-.02em;background:linear-gradient(100deg,#fff 30%,#6f9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:36em;color:var(--mute);font-size:1.1rem;margin:0 0 22px}
+.btn{display:inline-block;padding:11px 24px;border-radius:4px;text-decoration:none;background:var(--grad);border:1px solid #3d6bff;color:#fff;margin:0 10px 10px 0}
+.btn.o{background:none;border-color:var(--line)}
+.reel{margin-top:30px;border:1px solid var(--line);border-radius:6px;background:var(--panel);overflow:hidden}
+.screen{aspect-ratio:16/9;background:var(--grad);display:grid;place-items:center;color:#fff;position:relative}
+.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.screen span{opacity:.8}
+.tl{padding:14px 16px 16px;border-top:1px solid var(--line)}
+.ruler{display:flex;justify-content:space-between;font-size:.75rem;color:var(--mute);font-variant-numeric:tabular-nums;margin-bottom:8px}
+.track{position:relative;height:46px;background:#050a1f;border-radius:3px;display:flex;gap:3px;padding:4px}
+.clip{flex:1;border-radius:2px;background:#2a4bb0;opacity:.35}
+.clip:nth-child(3n){flex:2}.clip:nth-child(4n){opacity:.8;background:var(--blue)}
+.head{position:absolute;top:-4px;bottom:-4px;width:2px;background:#fff;left:0;animation:scrub 9s linear infinite}
+.head::before{content:"";position:absolute;top:-2px;left:-5px;border:6px solid transparent;border-top:8px solid #fff}
+@keyframes scrub{to{left:calc(100% - 2px)}}
+section{padding:72px 0 8px}
+h2{font-size:1.8rem;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 26px;max-width:40em}
+.svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.svc div{padding:20px;border:1px solid var(--line);border-radius:6px;background:linear-gradient(160deg,#000,#0b1a4d)}
+.svc b{display:block;margin-bottom:4px}
+.svc p{margin:0;color:var(--mute);font-size:.95rem}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filters button{font:inherit;font-size:.9rem;padding:5px 15px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;cursor:pointer}
+.filters button[aria-pressed=true]{background:var(--grad);border-color:#3d6bff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit}
+.card .poster{aspect-ratio:16/9;display:grid;place-items:center;font-size:2rem;transition:filter .2s}
+.card:hover .poster{filter:brightness(1.3)}
+.card .t{padding:14px 16px}
+.card b{display:block}
+.card p{margin:4px 0 8px;color:var(--mute);font-size:.92rem}
+.card .tags{margin-top:8px}
+.tags span{display:inline-block;font-size:.8rem;border:1px solid var(--line);border-radius:3px;padding:0 8px;margin:0 6px 4px 0;color:#b8c6f5}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.steps div{padding:18px;border-right:1px solid var(--line);background:linear-gradient(160deg,#000,#081445)}
+.steps div:last-child{border-right:0}
+.steps small{color:var(--blue);font-weight:600}
+.steps b{display:block}
+.steps p{margin:4px 0 0;color:var(--mute);font-size:.92rem}
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:36px}
+.job{padding:14px 0;border-bottom:1px solid var(--line)}
+.job small{color:var(--mute);display:block}
+.job ul{margin:8px 0 0;padding-left:18px;color:#c3cdf0;font-size:.95rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.tools span{border:1px solid var(--line);background:var(--panel);padding:3px 12px;border-radius:4px;font-size:.9rem}
+h3{font-size:1.05rem;margin:0 0 10px}
+.contact{padding-bottom:20px}
+footer{padding:48px 0;color:var(--mute);font-size:.85rem}
+dialog{border:0;padding:0;background:#000;width:min(960px,94vw);border-radius:6px;position:fixed}
+dialog::backdrop{background:rgba(0,3,15,.85)}
+dialog .box{aspect-ratio:16/9;display:grid;place-items:center;color:#fff;text-align:center;padding:20px}
+dialog iframe{width:100%;height:100%;border:0}
+dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;color:#000;border:0;border-radius:4px;padding:2px 12px;cursor:pointer;z-index:2}
+@media(max-width:720px){.about{grid-template-columns:1fr}nav a{margin-left:12px}.steps div{border-right:0;border-bottom:1px solid var(--line)}}
+@media(prefers-reduced-motion:reduce){.head{animation:none;left:35%}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><b>สุทธิวัฒน์ จ.</b><nav><a href="#services">บริการ</a><a href="#works">ผลงาน</a><a href="#about">เกี่ยวกับ</a><a href="#contact">ติดต่อ</a></nav></header>
+
+<div class="hero">
+  <h1>ตัดต่อ ถ่ายทำ<br>และเก็บรายละเอียดทุกเฟรม</h1>
+  <p>สุทธิวัฒน์ จิตจำนงค์ Video Editor / Videographer ในกรุงเทพฯ ทำวิดีโอให้คลินิกความงามและอสังหาริมทรัพย์ ตั้งแต่วางภาพ ถ่าย ตัดต่อ ไปจนถึงเกรดสีและส่งไฟล์ใช้งานจริง</p>
+  <a class="btn" href="#works">ดูผลงาน</a><a class="btn o" href="#contact">ติดต่อจ้างงาน</a>
+  <div class="reel">
+    <div class="screen">
+      <!-- ใส่ showreel: <video src="reel.mp4" autoplay muted loop playsinline></video> -->
+      <span>Showreel 2026 (ใส่ไฟล์ reel.mp4 ตรงนี้)</span>
+    </div>
+    <div class="tl" aria-hidden="true">
+      <div class="ruler"><span>00:00</span><span>00:15</span><span>00:30</span><span>00:45</span><span>01:00</span></div>
+      <div class="track"><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><i class="clip"></i><div class="head"></div></div>
+    </div>
+  </div>
+</div>
+
+<section id="services">
+  <h2>บริการ</h2>
+  <p class="sub">รับงานวิดีโอครบจบในที่เดียว หรือเลือกเฉพาะขั้นตอนที่ต้องการ</p>
+  <div class="svc">
+    <div><b>ถ่ายทำวิดีโอ</b><p>ถ่ายคอนเทนต์คลินิก สินค้า และโปรเจกต์อสังหาฯ วางมุมกล้องให้ตัดต่อง่าย</p></div>
+    <div><b>ตัดต่อ</b><p>คลิปสั้นแนวตั้ง โปรโมท รีวิว และวิดีโอแบรนด์ จัดจังหวะและเสียงให้ดูต่อเนื่อง</p></div>
+    <div><b>เกรดสีและแต่งภาพ</b><p>เกรดใน DaVinci Resolve ให้ผิวดูธรรมชาติ สะอาด และคุมโทนสีตามแบรนด์</p></div>
+    <div><b>โมชันกราฟิกและ AI Video</b><p>ไตเติล ข้อความบนจอ และภาพหรือคลิปที่สร้างด้วย AI สำหรับงานโปรโมท</p></div>
+  </div>
+</section>
+
+<section id="works">
+  <h2>ผลงาน</h2>
+  <p class="sub">คลิกที่การ์ดเพื่อดูวิดีโอ</p>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="process">
+  <h2>ขั้นตอนการทำงาน</h2>
+  <p class="sub">ทุกงานเดินตามลำดับนี้ เพื่อให้ส่งตรงเวลาและแก้ไขได้ชัดเจน</p>
+  <div class="steps">
+    <div><small>1</small><b>รับโจทย์</b><p>คุยเป้าหมาย กลุ่มลูกค้า และแพลตฟอร์มที่จะลง</p></div>
+    <div><small>2</small><b>วางสตอรี่บอร์ด</b><p>ร่างช็อตและสคริปต์ก่อนถ่าย</p></div>
+    <div><small>3</small><b>ถ่ายทำ</b><p>ถ่ายตามแผนพร้อมช็อตสำรอง</p></div>
+    <div><small>4</small><b>ตัดต่อและเกรดสี</b><p>ตัด ใส่เสียง ข้อความ และเกรดสี</p></div>
+    <div><small>5</small><b>ส่งงาน</b><p>แก้ตามรอบที่ตกลง ส่งไฟล์ตามสัดส่วนที่ใช้</p></div>
+  </div>
+</section>
+
+<section id="about">
+  <h2>เกี่ยวกับ</h2>
+  <p class="sub">ผมให้ความสำคัญกับจังหวะการตัด สีที่สะอาด และผิวที่ดูเป็นธรรมชาติ เหมาะกับงานที่ต้องดูน่าเชื่อถือ</p>
+  <div class="about">
+    <div>
+      <div class="job"><b>Editor / Videographer, Dr.TATTOF</b><small>2025 ถึงปัจจุบัน</small>
+        <ul><li>ทำวิดีโอคลินิกเลเซอร์และความงาม</li><li>ถ่ายทำ ตัดต่อ และเกรดสีให้ได้โทนสะอาดตามแบรนด์</li><li>ผลิตภาพและวิดีโอด้วย AI สำหรับงานโปรโมท</li></ul></div>
+      <div class="job"><b>Editor / Videographer, KC Grand Development</b><small>2023 - 2025</small>
+        <ul><li>ถ่ายและตัดต่อวิดีโอโครงการอสังหาริมทรัพย์</li><li>ทำคอนเทนต์สำหรับโซเชียลของโครงการ</li></ul></div>
+      <div class="job"><b>วท.บ. เทคโนโลยีมัลติมีเดียและแอนิเมชัน</b><small>มหาวิทยาลัยราชภัฏนครสวรรค์ · 2560 - 2565</small></div>
+    </div>
+    <div>
+      <h3>ซอฟต์แวร์</h3>
+      <div class="tools"><span>DaVinci Resolve</span><span>After Effects</span><span>Premiere Pro</span><span>Lightroom</span><span>CapCut</span></div>
+      <h3>ถนัด</h3>
+      <div class="tools"><span>เกรดสี</span><span>คลิปแนวตั้ง</span><span>โมชันกราฟิก</span><span>AI Video</span><span>คลินิกความงาม</span><span>อสังหาฯ</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <h2>ติดต่อ</h2>
+  <p class="sub">มีงานหรืออยากคุยโปรเจกต์ ทักมาได้เลย</p>
+  <a class="btn" href="mailto:jitjumnew@gmail.com">อีเมล: jitjumnew@gmail.com</a><a class="btn o" href="https://line.me/ti/p/kPOHMV6HEb" target="_blank" rel="noopener">LINE</a><a class="btn o" href="https://www.instagram.com/jnxw.s?psln=MWlkempwNTc1dDA4Mw==" target="_blank" rel="noopener">Instagram: @jnxw.s</a>
+</section>
+<footer>© 2026 สุทธิวัฒน์ จิตจำนงค์ · กรุงเทพฯ</footer>
+</div>
+
+<dialog id="dlg" aria-label="เล่นวิดีโอ"><button id="close">ปิด</button><div class="box" id="box"></div></dialog>
+
+<script>
+// ใส่ ID วิดีโอ YouTube ที่ช่อง y เช่น "dQw4w9WgXcQ" และแก้ชื่อ/คำอธิบายเป็นงานจริง
+var works=[
+ {t:"โปรโมทเลเซอร์",c:"คลินิก",d:"วิดีโอแนวสะอาดสำหรับบริการเลเซอร์ ใช้แสงและผ้าสีขาวคุมอารมณ์ภาพ",tg:["ถ่ายทำ","ตัดต่อ","เกรดสี"],y:"",g:"#000,#1741c4"},
+ {t:"รีวิวคอร์สผิวใส",c:"คลินิก",d:"ภาพก่อนหลังและคลิปรีวิวแนวตั้งสำหรับโซเชียล",tg:["คลิปแนวตั้ง","ตัดต่อ"],y:"",g:"#06143f,#3d6bff"},
+ {t:"เกรดสีคลินิกโทนสะอาด",c:"เกรดสี",d:"เกรดฟุตเทจ S-Log3 ใน DaVinci Resolve ให้ผิวเป็นธรรมชาติ",tg:["DaVinci Resolve","เกรดสี"],y:"",g:"#0b1a4d,#8fb0ff"},
+ {t:"โครงการบ้าน",c:"อสังหาฯ",d:"วิดีโอแนะนำโครงการบ้านและบรรยากาศภายในโครงการ",tg:["ถ่ายทำ","ตัดต่อ"],y:"",g:"#000,#0f3a9c"},
+ {t:"วิดีโอ AI",c:"AI Video",d:"สร้างภาพและคลิปด้วย AI แล้วนำมาตัดต่อรวมเป็นวิดีโอโปรโมท",tg:["AI","ตัดต่อ"],y:"",g:"#050a1f,#5b3df0"},
+ {t:"โมชันกราฟิกและข้อความบนจอ",c:"โมชัน",d:"ไตเติล ข้อความ และอินโฟกราฟิกใน After Effects",tg:["After Effects","โมชัน"],y:"",g:"#000,#2b5cff"}
+];
+var cats=["ทั้งหมด"].concat(works.map(function(w){return w.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
+var cur="ทั้งหมด",F=document.getElementById("filters"),G=document.getElementById("grid"),D=document.getElementById("dlg"),B=document.getElementById("box");
+function render(){
+ F.innerHTML="";cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){cur=c;render()};F.appendChild(b)});
+ G.innerHTML="";works.forEach(function(w){if(cur!=="ทั้งหมด"&&w.c!==cur)return;
+  var a=document.createElement("button");a.className="card";var g=w.g.split(",");
+  a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">▶</div><div class="t"><b>'+w.t+'</b><div class="tags"><span>ตัดต่อ</span><span>ถ่ายทำ</span></div></div>';
+  a.onclick=function(){B.innerHTML=w.y?'<iframe src="https://www.youtube.com/embed/'+w.y+'?autoplay=1" allow="autoplay;fullscreen" allowfullscreen></iframe>':'<span>ยังไม่ได้ใส่ลิงก์วิดีโอ<br>แก้ค่า y ของผลงานนี้ในไฟล์ให้เป็น ID ของ YouTube</span>';D.showModal()};
+  G.appendChild(a)})}
+document.getElementById("close").onclick=function(){D.close()};
+D.addEventListener("close",function(){B.innerHTML=""});
+D.addEventListener("click",function(e){if(e.target===D)D.close()});
+render();
+</script>
+</body>
+</html>
