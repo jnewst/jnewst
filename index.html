@@ -50,6 +50,15 @@ h2{font-size:1.8rem;margin:0 0 6px}
 @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
 .grid.hz{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:16px}
 .grid:empty{display:none}
+.masonry:empty{display:none}
+.masonry{column-count:2;column-gap:12px}
+@media(min-width:560px){.masonry{column-count:3}}
+@media(min-width:900px){.masonry{column-count:4}}
+.masonry button{display:block;width:100%;margin:0 0 12px;padding:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel);cursor:pointer;break-inside:avoid}
+.masonry img{display:block;width:100%;height:auto;transition:filter .2s}
+.masonry button:hover img{filter:brightness(1.15)}
+#pdlg{width:auto;max-width:94vw;background:transparent}
+#pdlg img{display:block;max-width:94vw;max-height:88vh;margin:auto;border-radius:6px}
 .grid:empty+.grid.hz{margin-top:0}
 .card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit}
 .card .poster{position:relative;aspect-ratio:9/16;overflow:hidden;display:grid;place-items:center;transition:filter .2s}
@@ -89,7 +98,7 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 </head>
 <body>
 <div class="wrap">
-<header><b>สุทธิวัฒน์ จ.</b><nav><a href="#services">บริการ</a><a href="#works">ผลงาน</a><a href="#about">เกี่ยวกับ</a><a href="#contact">ติดต่อ</a></nav></header>
+<header><b>สุทธิวัฒน์ จ.</b><nav><a href="#services">บริการ</a><a href="#works">ผลงาน</a><a href="#photos" id="navphotos">ภาพนิ่ง</a><a href="#about">เกี่ยวกับ</a><a href="#contact">ติดต่อ</a></nav></header>
 
 <div class="hero">
   <h1>ตัดต่อ ถ่ายทำ<br>และเก็บรายละเอียดทุกเฟรม</h1>
@@ -114,6 +123,13 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
   <div class="filters" id="filters"></div>
   <div class="grid" id="grid"></div>
   <div class="grid hz" id="grid2"></div>
+</section>
+
+<section id="photos">
+  <h2>ภาพนิ่ง</h2>
+  <p class="sub">ภาพถ่ายและงานแต่งสี ดูทั้งหมดได้ในอัลบั้ม Google Photos</p>
+  <div class="masonry" id="masonry"></div>
+  <a class="btn" href="https://photos.app.goo.gl/zvEyaDLj22CYYCcr9" target="_blank" rel="noopener">ดูภาพทั้งหมดบน Google Photos</a>
 </section>
 
 <section id="process">
@@ -157,6 +173,7 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 </div>
 
 <dialog id="dlg" aria-label="เล่นวิดีโอ"><button id="close">ปิด</button><div class="box" id="box"></div><a id="ext" target="_blank" rel="noopener" style="display:block;padding:8px 14px;color:#9aa8d0;font-size:.85rem;text-align:center">เล่นไม่ได้? เปิดดูบน Vimeo</a></dialog>
+<dialog id="pdlg" aria-label="ภาพขยาย"><button id="pclose">ปิด</button><img id="pimg" alt=""></dialog>
 
 <script>
 // ใส่ลิงก์ Vimeo ของแต่ละคลิปที่ช่อง y เช่น y:"https://vimeo.com/123456789" (เรียงตาม Showcase) ถ้ายังไม่ใส่ จะเปิดคลิปจาก Showcase รวมแทน
@@ -167,6 +184,8 @@ var works=[
  {t:"รีวิว | คุณซานนิ ลบรอยแผลเป็น",c:"รีวิว",y:"https://vimeo.com/1232306470",g:"#0b1a4d,#5b8cff"},
  {t:"รีวิว | คุณยูนิฟ โปรแกรมฉีด Neauvia",c:"รีวิว",y:"https://vimeo.com/1232306421",g:"#000,#1741c4"},
  {t:"รีวิว | คุณอั๋น ลบรอยสัก",c:"รีวิว",y:"https://vimeo.com/1232306419",g:"#06143f,#3d6bff"},
+ {t:"คอนเทนต์คลินิก | คุณนิก ลบรอยแดงสิว",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242783136",g:"#06143f,#3d6bff"},
+ {t:"คอนเทนต์คลินิก | คุณเซ้นต์ ขายโปรโมชั่น",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242782451",g:"#000,#1741c4"},
  {t:"คอนเทนต์คลินิก | One Direction to erase the marks",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1237508449",g:"#0b1a4d,#5b8cff"},
  {t:"คอนเทนต์คลินิก | คุณเซ้นต์",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242687469",g:"#000,#0f3a9c"},
  {t:"วิดีโอความรู้ | หมอหญิง ลบรอยสัก",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307410",g:"#06143f,#3d6bff"},
@@ -176,6 +195,7 @@ var works=[
  {t:"วิดีโอแนะนำโครงการ | บ้านเดี่ยวติดสวน",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306946",g:"#000,#1741c4"},
  {t:"วิดีโอแนะนำโครงการ | แนะนำโครงการ",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306945",g:"#06143f,#3d6bff"},
  {t:"สัมภาษณ์ | ผู้บริหารโครงการ K Grand Ville",c:"สัมภาษณ์",y:"https://vimeo.com/982304860",g:"#06143f,#3d6bff"},
+ {t:"AI | ลบรอยด่างขาว",c:"AI",y:"https://vimeo.com/1242782762",g:"#050a1f,#2b5cff"},
  {t:"AI | ปักหมุดโคราช",c:"AI",y:"https://vimeo.com/1232313794",g:"#000,#1741c4"},
  {t:"โฆษณา | ลบรอยสัก",c:"โฆษณา",y:"https://vimeo.com/1232306469",h:1,g:"#000,#0f3a9c"},
  {t:"โฆษณา | ลบรอยแดงสิว",c:"โฆษณา",y:"https://vimeo.com/1232306462",h:1,g:"#050a1f,#2b5cff"},
@@ -197,6 +217,21 @@ D.addEventListener("close",function(){B.innerHTML=""});
 D.addEventListener("click",function(e){if(e.target===D)D.close()});
 function thumbs(){works.forEach(function(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)/);if(!m||w.tq)return;w.tq=1;fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+m[1])+"&width=640").then(function(r){return r.json()}).then(function(j){if(j&&j.thumbnail_url){w.th=j.thumbnail_url;render()}}).catch(function(){})})}
 render();thumbs();
+// ภาพนิ่ง: โยนรูปลงโฟลเดอร์ images ใน repo เว็บจะแสดงให้เองอัตโนมัติ (เรียงตามชื่อไฟล์) หรือจะเขียนรายการเองก็ได้ เช่น {src:"images/01.jpg",t:"ชื่อภาพ"}
+var photos=[];
+(function(){
+ var M=document.getElementById("masonry"),P=document.getElementById("pdlg"),I=document.getElementById("pimg");
+ function show(list){list.forEach(function(p){var b=document.createElement("button");b.innerHTML='<img src="'+p.src+'" alt="'+(p.t||"")+'" loading="lazy">';b.onclick=function(){I.src=p.src;I.alt=p.t||"";P.showModal()};M.appendChild(b)})}
+ document.getElementById("pclose").onclick=function(){P.close()};
+ P.addEventListener("click",function(e){if(e.target===P)P.close()});
+ if(photos.length){show(photos);return}
+ var h=location.hostname;if(!/\.github\.io$/.test(h))return;
+ var seg=location.pathname.split("/")[1],r=(seg&&seg.indexOf(".")<0)?seg:h;
+ fetch("https://api.github.com/repos/"+h.split(".")[0]+"/"+r+"/contents/images").then(function(x){return x.ok?x.json():[]}).then(function(a){
+  if(!Array.isArray(a))return;
+  show(a.filter(function(f){return /\.(jpe?g|png|webp|gif)$/i.test(f.name)}).sort(function(x,y){return x.name.localeCompare(y.name,undefined,{numeric:true})}).map(function(f){return{src:"images/"+encodeURIComponent(f.name),t:""}}))
+ }).catch(function(){})
+})();
 </script>
 </body>
 </html>
