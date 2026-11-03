@@ -57,6 +57,15 @@ h2{font-size:1.8rem;margin:0 0 6px}
 .masonry button{display:block;width:100%;margin:0 0 12px;padding:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel);cursor:pointer;break-inside:avoid}
 .masonry img{display:block;width:100%;height:auto;transition:filter .2s}
 .masonry button:hover img{filter:brightness(1.15)}
+.card.album{overflow:visible;box-shadow:5px 5px 0 -1px var(--panel),5px 5px 0 0 var(--line)}
+.card.album .poster{aspect-ratio:4/3;border-radius:6px 6px 0 0}
+.card .badge{position:absolute;right:8px;bottom:8px;z-index:1;font-size:.8rem;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:1px 10px;color:#fff}
+.adlg{width:min(960px,94vw)}
+.adlg .ain{max-height:90vh;overflow:auto;padding:18px;background:var(--bg,#00030f)}
+.adlg .ahead{padding-right:64px;margin-bottom:14px}
+.adlg .ahead small{display:block;color:var(--mute)}
+#pprev,#pnext{top:50%;transform:translateY(-50%);right:auto;left:8px;font-size:1.3rem;padding:0 14px}
+#pnext{left:auto;right:8px}
 #pdlg{width:auto;max-width:94vw;background:transparent}
 #pdlg img{display:block;max-width:94vw;max-height:88vh;margin:auto;border-radius:6px}
 .grid:empty+.grid.hz{margin-top:0}
@@ -91,7 +100,7 @@ dialog::backdrop{background:rgba(0,3,15,.85)}
 dialog .box{aspect-ratio:16/9;display:grid;place-items:center;color:#fff;text-align:center;padding:20px}
 dialog .box.v{aspect-ratio:9/16;max-height:88vh;padding:0}
 dialog iframe{width:100%;height:100%;border:0}
-dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;color:#000;border:0;border-radius:4px;padding:2px 12px;cursor:pointer;z-index:2}
+dialog>button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;color:#000;border:0;border-radius:4px;padding:2px 12px;cursor:pointer;z-index:2}
 @media(max-width:720px){.about{grid-template-columns:1fr}nav a{margin-left:12px}.steps div{border-right:0;border-bottom:1px solid var(--line)}}
 @media(prefers-reduced-motion:reduce){.head{animation:none;left:35%}html{scroll-behavior:auto}}
 </style>
@@ -127,9 +136,8 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 
 <section id="photos">
   <h2>ภาพนิ่ง</h2>
-  <p class="sub">ภาพถ่ายและงานแต่งสี ดูทั้งหมดได้ในอัลบั้ม Google Photos</p>
-  <div class="masonry" id="masonry"></div>
-  <a class="btn" href="https://photos.app.goo.gl/zvEyaDLj22CYYCcr9" target="_blank" rel="noopener">ดูภาพทั้งหมดบน Google Photos</a>
+  <p class="sub">แยกเป็นอัลบั้มตามงาน คลิกการ์ดเพื่อดูภาพทั้งหมดของงานนั้น</p>
+  <div class="grid" id="albums"></div>
 </section>
 
 <section id="process">
@@ -173,7 +181,8 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 </div>
 
 <dialog id="dlg" aria-label="เล่นวิดีโอ"><button id="close">ปิด</button><div class="box" id="box"></div><a id="ext" target="_blank" rel="noopener" style="display:block;padding:8px 14px;color:#9aa8d0;font-size:.85rem;text-align:center">เล่นไม่ได้? เปิดดูบน Vimeo</a></dialog>
-<dialog id="pdlg" aria-label="ภาพขยาย"><button id="pclose">ปิด</button><img id="pimg" alt=""></dialog>
+<dialog id="adlg" class="adlg" aria-label="อัลบั้ม"><button id="aclose">ปิด</button><div class="ain"><div class="ahead"><b id="atitle"></b><small id="adesc"></small></div><div class="masonry" id="amasonry"></div></div></dialog>
+<dialog id="pdlg" aria-label="ภาพขยาย"><button id="pclose">ปิด</button><button id="pprev" aria-label="ก่อนหน้า">‹</button><button id="pnext" aria-label="ถัดไป">›</button><img id="pimg" alt=""></dialog>
 
 <script>
 // ใส่ลิงก์ Vimeo ของแต่ละคลิปที่ช่อง y เช่น y:"https://vimeo.com/123456789" (เรียงตาม Showcase) ถ้ายังไม่ใส่ จะเปิดคลิปจาก Showcase รวมแทน
@@ -217,20 +226,61 @@ D.addEventListener("close",function(){B.innerHTML=""});
 D.addEventListener("click",function(e){if(e.target===D)D.close()});
 function thumbs(){works.forEach(function(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)/);if(!m||w.tq)return;w.tq=1;fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+m[1])+"&width=640").then(function(r){return r.json()}).then(function(j){if(j&&j.thumbnail_url){w.th=j.thumbnail_url;render()}}).catch(function(){})})}
 render();thumbs();
-// ภาพนิ่ง: โยนรูปลงโฟลเดอร์ images ใน repo เว็บจะแสดงให้เองอัตโนมัติ (เรียงตามชื่อไฟล์) หรือจะเขียนรายการเองก็ได้ เช่น {src:"images/01.jpg",t:"ชื่อภาพ"}
-var photos=[];
+// ภาพนิ่งแบบอัลบั้ม: 1 อัลบั้ม = 1 การ์ด (1 โฟลเดอร์ใน images/)
+// วิธีที่ 1 (อัตโนมัติ): สร้างโฟลเดอร์ images/<ชื่อโฟลเดอร์>/ แล้วโยนรูปลงไป จากนั้นใส่ {t:"ชื่องาน",dir:"ชื่อโฟลเดอร์"} ด้านล่าง
+//   (ไม่ใส่ในรายการก็ได้ ระบบจะสร้างการ์ดให้เองโดยใช้ชื่อโฟลเดอร์เป็นชื่อ)
+// วิธีที่ 2 (ระบุเอง): {t:"ชื่องาน",d:"คำอธิบาย",cover:"images/a/01.jpg",imgs:["images/a/01.jpg","images/a/02.jpg"]}
+var albums=[
+ {t:"RemovalOnMe",dir:"RemovalOnMe",cover:"RemovalOnMe-151.jpg",imgs:["images/RemovalOnMe/RemovalOnMe-43.jpg","images/RemovalOnMe/RemovalOnMe-45.jpg","images/RemovalOnMe/RemovalOnMe-73.jpg","images/RemovalOnMe/RemovalOnMe-79.jpg","images/RemovalOnMe/RemovalOnMe-111.jpg","images/RemovalOnMe/RemovalOnMe-133.jpg","images/RemovalOnMe/RemovalOnMe-134.jpg","images/RemovalOnMe/RemovalOnMe-151.jpg","images/RemovalOnMe/RemovalOnMe-153.jpg","images/RemovalOnMe/RemovalOnMe-161.jpg","images/RemovalOnMe/RemovalOnMe-185.jpg","images/RemovalOnMe/RemovalOnMe-191.jpg","images/RemovalOnMe/RemovalOnMe-201.jpg","images/RemovalOnMe/RemovalOnMe-230.jpg","images/RemovalOnMe/RemovalOnMe-237.jpg"]},
+ {t:"OneDirectionToEraseTheMarks",dir:"OneDirectionToEraseTheMarks",cover:"OneDirectionToEraseTheMarks-58.jpg",imgs:["images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-3.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-7.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-24.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-27.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-35.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-55.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-58.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-67.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-77.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-85.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-95.jpg","images/OneDirectionToEraseTheMarks/OneDirectionToEraseTheMarks-130.jpg"]},
+ {t:"ตรุษจีน",dir:"ChineseNewYear",cover:"cny-67.jpg",imgs:["images/ChineseNewYear/cny-3.jpg","images/ChineseNewYear/cny-21.jpg","images/ChineseNewYear/cny-34.jpg","images/ChineseNewYear/cny-44.jpg","images/ChineseNewYear/cny-47.jpg","images/ChineseNewYear/cny-56.jpg","images/ChineseNewYear/cny-67.jpg","images/ChineseNewYear/cny-73.jpg","images/ChineseNewYear/cny-104.jpg","images/ChineseNewYear/cny-106.jpg","images/ChineseNewYear/cny-118.jpg"]}
+ // {t:"งานอีเวนต์ | BioActive Plus",d:"ภาพบรรยากาศและเบื้องหลัง",dir:"bioactive"},
+ // {t:"คอนเทนต์คลินิก",dir:"clinic"},
+ // {t:"โครงการ K Grand Ville",dir:"kgrand",cover:"01.jpg"}
+];
 (function(){
- var M=document.getElementById("masonry"),P=document.getElementById("pdlg"),I=document.getElementById("pimg");
- function show(list){list.forEach(function(p){var b=document.createElement("button");b.innerHTML='<img src="'+p.src+'" alt="'+(p.t||"")+'" loading="lazy">';b.onclick=function(){I.src=p.src;I.alt=p.t||"";P.showModal()};M.appendChild(b)})}
+ var A=document.getElementById("albums"),AD=document.getElementById("adlg"),AM=document.getElementById("amasonry"),
+ P=document.getElementById("pdlg"),I=document.getElementById("pimg"),list=[],idx=0;
+ var IMG=/\.(jpe?g|png|webp|gif|avif)$/i;
+ function esc(s){return String(s||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+ function num(a,b){return a.localeCompare(b,undefined,{numeric:true})}
+ function norm(x){return typeof x==="string"?{src:x,t:""}:x}
+ function open(i){idx=(i+list.length)%list.length;I.src=list[idx].src;I.alt=list[idx].t||"";if(!P.open)P.showModal()}
+ function openAlbum(al){
+  document.getElementById("atitle").textContent=al.t;document.getElementById("adesc").textContent=(al.d?al.d+" · ":"")+al.imgs.length+" ภาพ";
+  AM.innerHTML="";list=al.imgs;
+  list.forEach(function(p,i){var b=document.createElement("button");b.innerHTML='<img src="'+esc(p.src)+'" alt="'+esc(p.t)+'" loading="lazy">';b.onclick=function(){open(i)};AM.appendChild(b)});
+  AD.showModal()}
+ function draw(){
+  A.innerHTML="";
+  albums.forEach(function(al){
+   if(!al.imgs||!al.imgs.length)return;
+   var cv=al.cover?(al.cover.indexOf("/")<0&&al.dir!==undefined?"images/"+(al.dir?encodeURIComponent(al.dir)+"/":"")+encodeURIComponent(al.cover):al.cover):al.imgs[0].src;
+   var a=document.createElement("button");a.className="card album";
+   a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,#000,#0f3a9c)"><img src="'+esc(cv)+'" alt="" loading="lazy"><span class="badge">'+al.imgs.length+' ภาพ</span></div><div class="t"><b>'+esc(al.t)+'</b>'+(al.d?'<p>'+esc(al.d)+'</p>':'')+'</div>';
+   a.onclick=function(){openAlbum(al)};A.appendChild(a)})}
+ document.getElementById("aclose").onclick=function(){AD.close()};
+ AD.addEventListener("click",function(e){if(e.target===AD)AD.close()});
  document.getElementById("pclose").onclick=function(){P.close()};
+ document.getElementById("pprev").onclick=function(){open(idx-1)};
+ document.getElementById("pnext").onclick=function(){open(idx+1)};
  P.addEventListener("click",function(e){if(e.target===P)P.close()});
- if(photos.length){show(photos);return}
- var h=location.hostname;if(!/\.github\.io$/.test(h))return;
+ P.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")open(idx-1);if(e.key==="ArrowRight")open(idx+1)});
+ albums.forEach(function(al){if(al.imgs)al.imgs=al.imgs.map(norm)});
+ var h=location.hostname;
+ if(!/\.github\.io$/.test(h)){draw();return}
  var seg=location.pathname.split("/")[1],r=(seg&&seg.indexOf(".")<0)?seg:h;
- fetch("https://api.github.com/repos/"+h.split(".")[0]+"/"+r+"/contents/images").then(function(x){return x.ok?x.json():[]}).then(function(a){
-  if(!Array.isArray(a))return;
-  show(a.filter(function(f){return /\.(jpe?g|png|webp|gif)$/i.test(f.name)}).sort(function(x,y){return x.name.localeCompare(y.name,undefined,{numeric:true})}).map(function(f){return{src:"images/"+encodeURIComponent(f.name),t:""}}))
- }).catch(function(){})
+ fetch("https://api.github.com/repos/"+h.split(".")[0]+"/"+r+"/git/trees/HEAD?recursive=1").then(function(x){return x.ok?x.json():{tree:[]}}).then(function(j){
+  var by={};
+  (j.tree||[]).forEach(function(f){var m=f.path.match(/^images\/(?:([^\/]+)\/)?([^\/]+)$/);if(!m||f.type!=="blob"||!IMG.test(m[2]))return;(by[m[1]||""]=by[m[1]||""]||[]).push(m[2])});
+  var used={};
+  albums.forEach(function(al){
+   if(al.imgs&&al.imgs.length)return;
+   var k=al.dir||"";used[k]=1;
+   al.imgs=(by[k]||[]).sort(num).map(function(n){return{src:"images/"+(k?encodeURIComponent(k)+"/":"")+encodeURIComponent(n),t:""}})});
+  Object.keys(by).sort(num).forEach(function(k){if(used[k])return;
+   albums.push({t:k||"ภาพอื่น ๆ",dir:k,imgs:by[k].sort(num).map(function(n){return{src:"images/"+(k?encodeURIComponent(k)+"/":"")+encodeURIComponent(n),t:""}})})});
+  draw()}).catch(draw)
 })();
 </script>
 </body>
