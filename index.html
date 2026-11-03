@@ -88,8 +88,8 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
   <a class="btn" href="#works">ดูผลงาน</a><a class="btn o" href="#contact">ติดต่อจ้างงาน</a>
   <div class="reel">
     <div class="screen">
-      <!-- ใส่ showreel: <video src="reel.mp4" autoplay muted loop playsinline></video> -->
-      <span>Showreel 2026 (ใส่ไฟล์ reel.mp4 ตรงนี้)</span>
+      <iframe src="https://vimeo.com/showcase/12436496/embed" title="Jnew Portfolio" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      
     </div>
     <div class="tl" aria-hidden="true">
       <div class="ruler"><span>00:00</span><span>00:15</span><span>00:30</span><span>00:45</span><span>01:00</span></div>
@@ -159,7 +159,7 @@ dialog button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 <dialog id="dlg" aria-label="เล่นวิดีโอ"><button id="close">ปิด</button><div class="box" id="box"></div></dialog>
 
 <script>
-// ใส่ ID วิดีโอ YouTube ที่ช่อง y เช่น "dQw4w9WgXcQ" และแก้ชื่อ/คำอธิบายเป็นงานจริง
+// ช่อง y ใส่ลิงก์วิดีโอเต็ม (YouTube หรือ Vimeo) หรือ ID ของ YouTube ก็ได้ เช่น y:"https://vimeo.com/123456789"
 var works=[
  {t:"โปรโมทเลเซอร์",c:"คลินิก",d:"วิดีโอแนวสะอาดสำหรับบริการเลเซอร์ ใช้แสงและผ้าสีขาวคุมอารมณ์ภาพ",tg:["ถ่ายทำ","ตัดต่อ","เกรดสี"],y:"",g:"#000,#1741c4"},
  {t:"รีวิวคอร์สผิวใส",c:"คลินิก",d:"ภาพก่อนหลังและคลิปรีวิวแนวตั้งสำหรับโซเชียล",tg:["คลิปแนวตั้ง","ตัดต่อ"],y:"",g:"#06143f,#3d6bff"},
@@ -168,6 +168,7 @@ var works=[
  {t:"วิดีโอ AI",c:"AI Video",d:"สร้างภาพและคลิปด้วย AI แล้วนำมาตัดต่อรวมเป็นวิดีโอโปรโมท",tg:["AI","ตัดต่อ"],y:"",g:"#050a1f,#5b3df0"},
  {t:"โมชันกราฟิกและข้อความบนจอ",c:"โมชัน",d:"ไตเติล ข้อความ และอินโฟกราฟิกใน After Effects",tg:["After Effects","โมชัน"],y:"",g:"#000,#2b5cff"}
 ];
+function emb(u){if(!u)return"";var s,m;if(m=u.match(/vimeo\.com\/showcase\/(\d+)/i)){s="https://vimeo.com/showcase/"+m[1]+"/embed";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}if(m=u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([a-z0-9]+))?/i)){s="https://player.vimeo.com/video/"+m[1]+"?autoplay=1"+(m[2]?"&h="+m[2]:"")}else if(m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)){s="https://www.youtube.com/embed/"+m[1]+"?autoplay=1"}else if(/^[\w-]{11}$/.test(u)){s="https://www.youtube.com/embed/"+u+"?autoplay=1"}else return"";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}
 var cats=["ทั้งหมด"].concat(works.map(function(w){return w.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
 var cur="ทั้งหมด",F=document.getElementById("filters"),G=document.getElementById("grid"),D=document.getElementById("dlg"),B=document.getElementById("box");
 function render(){
@@ -175,7 +176,7 @@ function render(){
  G.innerHTML="";works.forEach(function(w){if(cur!=="ทั้งหมด"&&w.c!==cur)return;
   var a=document.createElement("button");a.className="card";var g=w.g.split(",");
   a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">▶</div><div class="t"><b>'+w.t+'</b><div class="tags"><span>ตัดต่อ</span><span>ถ่ายทำ</span></div></div>';
-  a.onclick=function(){B.innerHTML=w.y?'<iframe src="https://www.youtube.com/embed/'+w.y+'?autoplay=1" allow="autoplay;fullscreen" allowfullscreen></iframe>':'<span>ยังไม่ได้ใส่ลิงก์วิดีโอ<br>แก้ค่า y ของผลงานนี้ในไฟล์ให้เป็น ID ของ YouTube</span>';D.showModal()};
+  a.onclick=function(){B.innerHTML=emb(w.y)||'<span>ยังไม่ได้ใส่ลิงก์วิดีโอ<br>แก้ค่า y ของผลงานนี้ในไฟล์ให้เป็นลิงก์ YouTube หรือ Vimeo</span>';D.showModal()};
   G.appendChild(a)})}
 document.getElementById("close").onclick=function(){D.close()};
 D.addEventListener("close",function(){B.innerHTML=""});
