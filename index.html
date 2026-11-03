@@ -103,16 +103,88 @@ dialog iframe{width:100%;height:100%;border:0}
 dialog>button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;color:#000;border:0;border-radius:4px;padding:2px 12px;cursor:pointer;z-index:2}
 @media(max-width:720px){.about{grid-template-columns:1fr}nav a{margin-left:12px}.steps div{border-right:0;border-bottom:1px solid var(--line)}}
 @media(prefers-reduced-motion:reduce){.head{animation:none;left:35%}html{scroll-behavior:auto}}
+
+/* ===== Depth & lighting ===== */
+body{overflow-x:clip}
+body::before{background:
+ radial-gradient(120% 90% at 50% 35%,transparent 58%,#00000088 100%),
+ radial-gradient(900px 600px at 85% -5%,#1741c4aa,transparent 60%),
+ radial-gradient(760px 560px at 100% 78%,#4a2fc055,transparent 62%),
+ radial-gradient(700px 500px at 0% 40%,#0a2a8a66,transparent 60%),
+ radial-gradient(620px 440px at 8% 100%,#1741c455,transparent 62%)}
+body::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.07;background-size:160px 160px;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.hero{position:relative}
+.hero::before{content:"";position:absolute;z-index:-1;left:-8%;top:-12%;width:78%;height:95%;pointer-events:none;filter:blur(36px);
+ background:radial-gradient(closest-side at 35% 45%,#3558ff55,transparent 70%),radial-gradient(closest-side at 70% 60%,#6a3df14d,transparent 70%)}
+#contact{position:relative}
+#contact::after{content:"";position:absolute;z-index:-1;left:50%;bottom:-70px;width:min(900px,100%);height:340px;transform:translateX(-50%);pointer-events:none;filter:blur(26px);
+ background:radial-gradient(closest-side,#2b5cff44,#5b3df322 60%,transparent)}
+
+/* ===== Metallic section dividers ===== */
+section{position:relative}
+section::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+ background:linear-gradient(90deg,transparent,#2e3858 18%,#9aa3bf 50%,#2e3858 82%,transparent);opacity:.75}
+
+/* ===== Stats & brands ===== */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:44px}
+.stats>div{position:relative;padding:18px 20px;border-radius:8px;background:linear-gradient(145deg,#ffffff12,#ffffff04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 #ffffff1a,0 14px 34px -22px #000}
+.stats>div::before{content:"";position:absolute;inset:0;padding:1px;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,#86a8ffaa,#ffffff12 40%,#2c419466);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
+.stats .num{display:block;font-size:clamp(1.9rem,5vw,2.7rem);line-height:1.1;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+ background:linear-gradient(100deg,#fff 30%,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats small{display:block;color:var(--mute);font-size:.9rem;line-height:1.5;margin-top:2px}
+@media(min-width:720px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.brands{display:flex;flex-wrap:wrap;align-items:center;gap:10px 36px;padding:22px 0 0}
+.brands small{flex-basis:100%;color:#6f7ba3;font-size:.85rem}
+.brands span{position:relative;font-weight:600;letter-spacing:.12em;color:#64748b;cursor:default;transition:color .4s ease,text-shadow .4s ease}
+.brands span::after{content:"";position:absolute;left:0;right:.12em;bottom:-5px;height:1px;background:linear-gradient(90deg,transparent,#6f9bff,transparent);transform:scaleX(0);transition:transform .4s ease}
+.brands span:hover{color:#fff;text-shadow:0 0 18px #4f86ffaa}
+.brands span:hover::after{transform:scaleX(1)}
+
+/* ===== Glass cards with edge light ===== */
+.svc div{position:relative;border:1px solid transparent;border-radius:8px;
+ background:linear-gradient(160deg,#03081f,#0a1747) padding-box,linear-gradient(135deg,#86a8ff 0%,#2c4194 24%,#17234f 58%,#2c4194aa 100%) border-box;
+ box-shadow:inset 0 1px 0 #ffffff1f,0 12px 30px -20px #000;transition:box-shadow .35s ease,transform .35s ease}
+.svc div::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(145deg,#ffffff14,transparent 42%)}
+.svc div>*{position:relative}
+.card{border:1px solid transparent;background:linear-gradient(var(--panel),var(--panel)) padding-box,linear-gradient(135deg,#6b92ff99,#1f2f66 42%,#1f2f66) border-box;transition:box-shadow .35s ease,transform .35s ease}
+.btn{transition:box-shadow .3s ease,border-color .3s ease,transform .3s ease}
+.filters button,.tools span,.steps div{transition:box-shadow .3s ease,border-color .3s ease,background .3s ease}
+
+@media(hover:hover){
+ .svc div:hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 #ffffff2e,inset 0 0 32px #2b5cff30,0 16px 44px -16px #2b5cffb0}
+ .card:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1px #4f86ff55,0 16px 40px -16px #2b5cffaa}
+ .card.album:hover{box-shadow:5px 5px 0 -1px var(--panel),5px 5px 0 0 var(--line),0 16px 40px -14px #2b5cffaa}
+ .btn:hover{border-color:#7aa2ff;box-shadow:0 0 0 1px #4f86ff55,0 8px 30px -6px #2b5cffcc}
+ .filters button:hover,.tools span:hover{border-color:#4f86ff;box-shadow:0 0 18px -4px #2b5cffaa}
+ .steps div:hover{background:linear-gradient(160deg,#02061c,#0d1f66)}
+}
+@media(prefers-reduced-motion:reduce){.svc div,.card,.btn{transition:none}.svc div:hover,.card:hover{transform:none}}
+
+/* กันชื่ออัลบั้มยาวดันกริดล้นจอมือถือ */
+.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card b{overflow-wrap:anywhere}
+@media(prefers-reduced-motion:reduce){.brands span,.brands span::after{transition:none}}
+@media(max-width:720px){header{flex-wrap:wrap;gap:6px 16px}header b{white-space:nowrap}nav a:first-child{margin-left:0}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header><b>สุทธิวัฒน์ จ.</b><nav><a href="#services">บริการ</a><a href="#works">ผลงาน</a><a href="#photos" id="navphotos">ภาพนิ่ง</a><a href="#about">เกี่ยวกับ</a><a href="#contact">ติดต่อ</a></nav></header>
+<header><b>สุทธิวัฒน์ จิตจำนงค์</b><nav><a href="#services">บริการ</a><a href="#works">ผลงาน</a><a href="#photos" id="navphotos">ภาพนิ่ง</a><a href="#about">เกี่ยวกับ</a><a href="#contact">ติดต่อ</a></nav></header>
 
 <div class="hero">
   <h1>ตัดต่อ ถ่ายทำ<br>และเก็บรายละเอียดทุกเฟรม</h1>
   <p>สุทธิวัฒน์ จิตจำนงค์ Video Editor / Videographer ในกรุงเทพฯ ทำวิดีโอให้คลินิกความงามและอสังหาริมทรัพย์ ตั้งแต่วางภาพ ถ่าย ตัดต่อ ไปจนถึงเกรดสีและส่งไฟล์ใช้งานจริง</p>
   <a class="btn" href="#works">ดูผลงาน</a><a class="btn o" href="#contact">ติดต่อจ้างงาน</a>
+<div class="stats" aria-label="สถิติโดยย่อ">
+  <div><b class="num"><span data-stat="years" data-suffix="+" data-to="3">3+</span></b><small>ปีประสบการณ์ถ่ายทำและตัดต่อ</small></div>
+  <div><b class="num"><span data-stat="works" data-to="22">22</span></b><small>วิดีโอในคลังผลงาน</small></div>
+  <div><b class="num"><span data-stat="albums" data-to="3">3</span></b><small>อัลบั้มภาพนิ่ง</small></div>
+  <div><b class="num"><span data-stat="fields" data-to="2">2</span></b><small>สายงานหลัก: คลินิกความงามและอสังหาฯ</small></div>
+</div>
+<div class="brands"><small>แบรนด์และโครงการที่เคยทำ</small><span>Dr.TATTOF</span><span>KC Grand Development</span><span>BioActive Plus</span></div>
 </div>
 
 <section id="services">
@@ -282,6 +354,22 @@ var albums=[
   Object.keys(by).sort(num).forEach(function(k){if(used[k])return;
    albums.push({t:k||"ภาพอื่น ๆ",dir:k,imgs:by[k].sort(num).map(function(n){return{src:"images/"+(k?encodeURIComponent(k)+"/":"")+encodeURIComponent(n),t:""}})})});
   draw()}).catch(draw)
+})();
+</script>
+<script>
+(function(){
+ var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
+ var vals={years:Math.max(1,new Date().getFullYear()-2023),works:works.length,albums:albums.length};
+ var els=[].slice.call(document.querySelectorAll("[data-stat]"));
+ els.forEach(function(el){var k=el.getAttribute("data-stat");if(vals[k]!=null)el.setAttribute("data-to",vals[k])});
+ function fmt(el,n){el.textContent=n+(el.getAttribute("data-suffix")||"")}
+ function run(el){var to=+el.getAttribute("data-to");if(reduce||!to){fmt(el,to);return}
+  var t0=null,d=1100;function f(t){if(t0===null)t0=t;var p=Math.min((t-t0)/d,1);fmt(el,Math.round(to*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(f)}
+  fmt(el,0);requestAnimationFrame(f)}
+ els.forEach(function(el){fmt(el,+el.getAttribute("data-to"))});
+ if(!("IntersectionObserver" in window))return;
+ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run(e.target);io.unobserve(e.target)}})},{threshold:.5});
+ els.forEach(function(el){io.observe(el)});
 })();
 </script>
 </body>
