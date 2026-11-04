@@ -60,10 +60,36 @@ h2{font-size:1.8rem;margin:0 0 6px}
 .card.album{overflow:visible;box-shadow:5px 5px 0 -1px var(--panel),5px 5px 0 0 var(--line)}
 .card.album .poster{aspect-ratio:4/3;border-radius:6px 6px 0 0}
 .card .badge{position:absolute;right:8px;bottom:8px;z-index:1;font-size:.8rem;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:1px 10px;color:#fff}
-.adlg{width:min(960px,94vw)}
-.adlg .ain{max-height:90vh;overflow:auto;padding:18px;background:var(--bg,#00030f)}
-.adlg .ahead{padding-right:64px;margin-bottom:14px}
-.adlg .ahead small{display:block;color:var(--mute)}
+.adlg{position:fixed;inset:0;width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:var(--ink);overflow:hidden;--ease:cubic-bezier(.32,.72,0,1)}
+.adlg::backdrop{background:transparent}
+.adlg .ablur{position:absolute;inset:0;background:rgba(0,4,20,.5);opacity:0;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);transition:opacity .45s ease,-webkit-backdrop-filter .5s ease,backdrop-filter .5s ease}
+.adlg.in .ablur{opacity:1;-webkit-backdrop-filter:blur(30px) saturate(1.3);backdrop-filter:blur(30px) saturate(1.3)}
+.adlg .awrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:max(24px,env(safe-area-inset-top)) 12px 24px}
+.adlg .ahead{text-align:center;color:#fff;max-width:92vw;opacity:0;transform:translateY(10px);transition:opacity .4s ease .12s,transform .55s var(--ease) .12s}
+.adlg.in .ahead{opacity:1;transform:none}
+.adlg .ahead b{display:block;font-size:1.5rem;font-weight:600;line-height:1.3;text-shadow:0 2px 16px #0009;overflow-wrap:anywhere}
+.adlg .ahead small{display:block;color:#c3d0f7;font-size:.9rem}
+.adlg .aslot{width:min(920px,92vw)}
+.adlg .apanel{position:relative;overflow:hidden;border-radius:30px;background:rgba(20,30,70,.5);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.2);box-shadow:0 30px 80px -20px #000c,inset 0 1px 0 #ffffff30}
+.adlg .apanel.fly{position:fixed;margin:0;transition:left .55s var(--ease),top .55s var(--ease),width .55s var(--ease),height .55s var(--ease),border-radius .55s var(--ease)}
+.adlg .acover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:opacity .45s ease}
+.adlg.in .acover{opacity:0}
+.adlg .agrid{position:relative;max-height:calc(100vh - 170px);max-height:calc(100dvh - 170px);overflow:auto;overscroll-behavior:contain;padding:16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;opacity:0;transition:opacity .35s ease .2s}
+.adlg.in .agrid{opacity:1}
+@media(min-width:720px){.adlg .agrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.adlg .agrid button{padding:0;border:0;border-radius:14px;overflow:hidden;aspect-ratio:1;cursor:pointer;background:#0a1330;opacity:0;transform:scale(.82);transition:opacity .4s ease,transform .55s var(--ease);transition-delay:calc(var(--i,0)*24ms + 240ms)}
+.adlg.in .agrid button{opacity:1;transform:none}
+.adlg.in .agrid button:hover{transform:scale(1.04);transition-delay:0s}
+.adlg .agrid img{display:block;width:100%;height:100%;object-fit:cover}
+.card.album:active{transform:scale(.97)}
+.card:active{transform:scale(.97)}
+.vdlg .apanel{background:linear-gradient(135deg,#000,#0f3a9c)}
+.vdlg .vplayer{position:absolute;inset:0;opacity:0;transition:opacity .25s ease}
+.vdlg.in .vplayer{opacity:1;transition:opacity .4s ease .4s}
+.vdlg .vplayer iframe{position:absolute;left:50%;top:50%;width:var(--pw);height:var(--ph);transform:translate(-50%,-50%);border:0;background:#000}
+.vdlg .vext{color:#c3d0f7;font-size:.85rem;text-decoration:none;opacity:0;transition:opacity .3s ease}
+.vdlg.in .vext{opacity:1;transition:opacity .4s ease .5s}
+@media(prefers-reduced-motion:reduce){.adlg *{transition-duration:.01ms!important;transition-delay:0s!important}}
 #pprev,#pnext{top:50%;transform:translateY(-50%);right:auto;left:8px;font-size:1.3rem;padding:0 14px}
 #pnext{left:auto;right:8px}
 #pdlg{width:auto;max-width:94vw;background:transparent}
@@ -200,7 +226,7 @@ section::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
 
 <section id="works">
   <h2>ผลงาน</h2>
-  <p class="sub">คลิกที่การ์ดเพื่อดูวิดีโอ เรียงตามคลังผลงานบน Vimeo</p>
+  <p class="sub">แท็บไฮไลต์คัดคลิปเด่นจากแต่ละหมวด ดูครบทุกคลิปได้ที่แท็บ “ทั้งหมด” คลิกการ์ดเพื่อเล่น</p>
   <div class="filters" id="filters"></div>
   <div class="grid" id="grid"></div>
   <div class="grid hz" id="grid2"></div>
@@ -253,45 +279,46 @@ section::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
 </div>
 
 <dialog id="dlg" aria-label="เล่นวิดีโอ"><button id="close">ปิด</button><div class="box" id="box"></div><a id="ext" target="_blank" rel="noopener" style="display:block;padding:8px 14px;color:#9aa8d0;font-size:.85rem;text-align:center">เล่นไม่ได้? เปิดดูบน Vimeo</a></dialog>
-<dialog id="adlg" class="adlg" aria-label="อัลบั้ม"><button id="aclose">ปิด</button><div class="ain"><div class="ahead"><b id="atitle"></b><small id="adesc"></small></div><div class="masonry" id="amasonry"></div></div></dialog>
+<dialog id="adlg" class="adlg" aria-label="อัลบั้ม"><div class="ablur"></div><div class="awrap"><div class="ahead"><b id="atitle"></b><small id="adesc"></small></div><div class="aslot" id="aslot"><div class="apanel" id="apanel"><img class="acover" id="acover" alt=""><div class="agrid" id="amasonry"></div></div></div></div><button id="aclose">ปิด</button></dialog>
+<dialog id="vdlg" class="adlg vdlg" aria-label="เล่นวิดีโอ"><div class="ablur"></div><div class="awrap"><div class="ahead"><b id="vtitle"></b><small id="vcat"></small></div><div class="aslot" id="vslot"><div class="apanel" id="vpanel"><img class="acover" id="vcover" alt=""><div class="vplayer" id="vplayer"></div></div></div><a class="vext" id="vext" target="_blank" rel="noopener">เล่นไม่ได้? เปิดดูบน Vimeo</a></div><button id="vclose">ปิด</button></dialog>
 <dialog id="pdlg" aria-label="ภาพขยาย"><button id="pclose">ปิด</button><button id="pprev" aria-label="ก่อนหน้า">‹</button><button id="pnext" aria-label="ถัดไป">›</button><img id="pimg" alt=""></dialog>
 
 <script>
 // ใส่ลิงก์ Vimeo ของแต่ละคลิปที่ช่อง y เช่น y:"https://vimeo.com/123456789" (เรียงตาม Showcase) ถ้ายังไม่ใส่ จะเปิดคลิปจาก Showcase รวมแทน
 var works=[
- {t:"งานอีเวนต์ | BioActive Plus - Meen",c:"งานอีเวนต์",y:"https://vimeo.com/1232305532",g:"#000,#0f3a9c"},
+ {t:"งานอีเวนต์ | BioActive Plus - Meen",c:"งานอีเวนต์",hl:1,y:"https://vimeo.com/1232305532",g:"#000,#0f3a9c"},
  {t:"งานอีเวนต์ | BioActive Plus - NamtanFilm",c:"งานอีเวนต์",y:"https://vimeo.com/1232305531",g:"#050a1f,#2b5cff"},
  {t:"งานอีเวนต์ | BioActive Plus - Becky",c:"งานอีเวนต์",y:"https://vimeo.com/1232305533",g:"#000,#1741c4"},
- {t:"รีวิว | คุณซานนิ ลบรอยแผลเป็น",c:"รีวิว",y:"https://vimeo.com/1232306470",g:"#0b1a4d,#5b8cff"},
+ {t:"รีวิว | คุณซานนิ ลบรอยแผลเป็น",c:"รีวิว",hl:1,y:"https://vimeo.com/1232306470",g:"#0b1a4d,#5b8cff"},
  {t:"รีวิว | คุณยูนิฟ โปรแกรมฉีด Neauvia",c:"รีวิว",y:"https://vimeo.com/1232306421",g:"#000,#1741c4"},
  {t:"รีวิว | คุณอั๋น ลบรอยสัก",c:"รีวิว",y:"https://vimeo.com/1232306419",g:"#06143f,#3d6bff"},
- {t:"คอนเทนต์คลินิก | คุณนิก ลบรอยแดงสิว",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242783136",g:"#06143f,#3d6bff"},
+ {t:"คอนเทนต์คลินิก | คุณนิก ลบรอยแดงสิว",c:"คอนเทนต์คลินิก",hl:1,y:"https://vimeo.com/1242783136",g:"#06143f,#3d6bff"},
  {t:"คอนเทนต์คลินิก | คุณเซ้นต์ ขายโปรโมชั่น",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242782451",g:"#000,#1741c4"},
  {t:"คอนเทนต์คลินิก | One Direction to erase the marks",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1237508449",g:"#0b1a4d,#5b8cff"},
  {t:"คอนเทนต์คลินิก | คุณเซ้นต์",c:"คอนเทนต์คลินิก",y:"https://vimeo.com/1242687469",g:"#000,#0f3a9c"},
- {t:"วิดีโอความรู้ | หมอหญิง ลบรอยสัก",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307410",g:"#06143f,#3d6bff"},
+ {t:"วิดีโอความรู้ | หมอหญิง ลบรอยสัก",c:"วิดีโอความรู้",hl:1,y:"https://vimeo.com/1232307410",g:"#06143f,#3d6bff"},
  {t:"วิดีโอความรู้ | หมอแบงค์ สอนดูแลผิว",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307409",g:"#0b1a4d,#5b8cff"},
  {t:"วิดีโอความรู้ | หมอหนุ่ม ก่อนลบรอยสัก ควรทำอย่างไร",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307408",g:"#000,#0f3a9c"},
  {t:"วิดีโอความรู้ | หมอปรัช การเลือกหัวเลเซอร์ลบรอยสัก",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307411",g:"#050a1f,#2b5cff"},
- {t:"วิดีโอแนะนำโครงการ | บ้านเดี่ยวติดสวน",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306946",g:"#000,#1741c4"},
+ {t:"วิดีโอแนะนำโครงการ | บ้านเดี่ยวติดสวน",c:"วิดีโอแนะนำโครงการ",hl:1,y:"https://vimeo.com/1232306946",g:"#000,#1741c4"},
  {t:"วิดีโอแนะนำโครงการ | แนะนำโครงการ",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306945",g:"#06143f,#3d6bff"},
- {t:"สัมภาษณ์ | ผู้บริหารโครงการ K Grand Ville",c:"สัมภาษณ์",y:"https://vimeo.com/982304860",g:"#06143f,#3d6bff"},
- {t:"AI | ลบรอยด่างขาว",c:"AI",y:"https://vimeo.com/1242782762",g:"#050a1f,#2b5cff"},
+ {t:"สัมภาษณ์ | ผู้บริหารโครงการ K Grand Ville",c:"สัมภาษณ์",hl:1,y:"https://vimeo.com/982304860",g:"#06143f,#3d6bff"},
+ {t:"AI | ลบรอยด่างขาว",c:"AI",hl:1,y:"https://vimeo.com/1242782762",g:"#050a1f,#2b5cff"},
  {t:"AI | ปักหมุดโคราช",c:"AI",y:"https://vimeo.com/1232313794",g:"#000,#1741c4"},
- {t:"โฆษณา | ลบรอยสัก",c:"โฆษณา",y:"https://vimeo.com/1232306469",h:1,g:"#000,#0f3a9c"},
+ {t:"โฆษณา | ลบรอยสัก",c:"โฆษณา",hl:1,y:"https://vimeo.com/1232306469",h:1,g:"#000,#0f3a9c"},
  {t:"โฆษณา | ลบรอยแดงสิว",c:"โฆษณา",y:"https://vimeo.com/1232306462",h:1,g:"#050a1f,#2b5cff"},
  {t:"โฆษณา | ลบแผลเป็น",c:"โฆษณา",y:"https://vimeo.com/1232306418",h:1,g:"#0b1a4d,#5b8cff"}
 ];
 var SHOW="https://vimeo.com/showcase/12436496";
 function emb(u){if(!u)return"";var s,m;if(m=u.match(/vimeo\.com\/showcase\/(\d+)\/?(?:[?#].*)?$/i)){s="https://vimeo.com/showcase/"+m[1]+"/embed";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}if(m=u.match(/vimeo\.com\/(?:showcase\/\d+\/)?(?:video\/)?(\d+)(?:\/([a-z0-9]+))?/i)){s="https://player.vimeo.com/video/"+m[1]+"?autoplay=1"+(m[2]?"&h="+m[2]:"")}else if(m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)){s="https://www.youtube.com/embed/"+m[1]+"?autoplay=1"}else if(/^[\w-]{11}$/.test(u)){s="https://www.youtube.com/embed/"+u+"?autoplay=1"}else return"";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}
-var cats=["ทั้งหมด"].concat(works.map(function(w){return w.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
-var cur="ทั้งหมด",F=document.getElementById("filters"),G=document.getElementById("grid"),G2=document.getElementById("grid2"),D=document.getElementById("dlg"),B=document.getElementById("box");
+var cats=["ไฮไลต์","ทั้งหมด"].concat(works.map(function(w){return w.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
+var cur="ไฮไลต์",F=document.getElementById("filters"),G=document.getElementById("grid"),G2=document.getElementById("grid2"),D=document.getElementById("dlg"),B=document.getElementById("box");
 function render(){
  F.innerHTML="";cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){cur=c;render()};F.appendChild(b)});
- G.innerHTML="";G2.innerHTML="";works.forEach(function(w){if(cur!=="ทั้งหมด"&&w.c!==cur)return;
+ G.innerHTML="";G2.innerHTML="";works.forEach(function(w){if(cur==="ไฮไลต์"?!w.hl:(cur!=="ทั้งหมด"&&w.c!==cur))return;
   var a=document.createElement("button");a.className="card"+(w.h?" h":"");var g=w.g.split(",");
   a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">'+(w.th?'<img src="'+w.th+'" alt="" loading="lazy">':'')+'<span class="play">▶</span></div><div class="t"><b>'+w.t+'</b><div class="tags"><span>ตัดต่อ</span><span>ถ่ายทำ</span></div></div>';
-  a.onclick=function(){var vt=!!w.y&&!w.h;D.style.width=vt?"min(calc(88vh*9/16),94vw)":"";B.className="box"+(vt?" v":"");B.innerHTML=emb(w.y||SHOW);document.getElementById("ext").href=w.y||SHOW;D.showModal()};
+  a.dataset.k=works.indexOf(w);a.onclick=function(){openVideo(w,a)};
   (w.h?G2:G).appendChild(a)})}
 document.getElementById("close").onclick=function(){D.close()};
 D.addEventListener("close",function(){B.innerHTML=""});
@@ -318,11 +345,28 @@ var albums=[
  function num(a,b){return a.localeCompare(b,undefined,{numeric:true})}
  function norm(x){return typeof x==="string"?{src:x,t:""}:x}
  function open(i){idx=(i+list.length)%list.length;I.src=list[idx].src;I.alt=list[idx].t||"";if(!P.open)P.showModal()}
- function openAlbum(al){
+ var PN=document.getElementById("apanel"),SL=document.getElementById("aslot"),curCard=null,busy=false;
+ function box(r){PN.style.left=r.left+"px";PN.style.top=r.top+"px";PN.style.width=r.width+"px";PN.style.height=r.height+"px"}
+ function reset(){PN.className="apanel";PN.removeAttribute("style");SL.style.height=""}
+ function openAlbum(al,card){
+  if(busy)return;busy=true;curCard=card;
   document.getElementById("atitle").textContent=al.t;document.getElementById("adesc").textContent=(al.d?al.d+" · ":"")+al.imgs.length+" ภาพ";
+  document.getElementById("acover").src=al._cv||al.imgs[0].src;
   AM.innerHTML="";list=al.imgs;
-  list.forEach(function(p,i){var b=document.createElement("button");b.innerHTML='<img src="'+esc(p.src)+'" alt="'+esc(p.t)+'" loading="lazy">';b.onclick=function(){open(i)};AM.appendChild(b)});
-  AD.showModal()}
+  list.forEach(function(p,i){var b=document.createElement("button");b.style.setProperty("--i",Math.min(i,18));b.innerHTML='<img src="'+esc(p.src)+'" alt="'+esc(p.t)+'" loading="lazy">';b.onclick=function(){open(i)};AM.appendChild(b)});
+  reset();AD.classList.remove("in");AD.showModal();
+  var pr=PN.getBoundingClientRect(),r=card.getBoundingClientRect();
+  SL.style.height=pr.height+"px";
+  PN.style.transition="none";PN.classList.add("fly");box(r);PN.style.borderRadius="12px";
+  card.style.visibility="hidden";void PN.offsetWidth;PN.style.transition="";
+  requestAnimationFrame(function(){requestAnimationFrame(function(){AD.classList.add("in");box(pr);PN.style.borderRadius=""})});
+  setTimeout(function(){PN.classList.remove("fly");PN.removeAttribute("style");busy=false},650)}
+ function closeAlbum(){
+  if(busy||!AD.open)return;busy=true;
+  var pr=PN.getBoundingClientRect(),r=curCard.getBoundingClientRect();
+  PN.style.transition="none";PN.classList.add("fly");box(pr);void PN.offsetWidth;PN.style.transition="";
+  AD.classList.remove("in");box(r);PN.style.borderRadius="12px";
+  setTimeout(function(){AD.close();reset();curCard.style.visibility="";busy=false},560)}
  function draw(){
   A.innerHTML="";
   albums.forEach(function(al){
@@ -330,9 +374,10 @@ var albums=[
    var cv=al.cover?(al.cover.indexOf("/")<0&&al.dir!==undefined?"images/"+(al.dir?encodeURIComponent(al.dir)+"/":"")+encodeURIComponent(al.cover):al.cover):al.imgs[0].src;
    var a=document.createElement("button");a.className="card album";
    a.innerHTML='<div class="poster" style="background:linear-gradient(135deg,#000,#0f3a9c)"><img src="'+esc(cv)+'" alt="" loading="lazy"><span class="badge">'+al.imgs.length+' ภาพ</span></div><div class="t"><b>'+esc(al.t)+'</b>'+(al.d?'<p>'+esc(al.d)+'</p>':'')+'</div>';
-   a.onclick=function(){openAlbum(al)};A.appendChild(a)})}
- document.getElementById("aclose").onclick=function(){AD.close()};
- AD.addEventListener("click",function(e){if(e.target===AD)AD.close()});
+   al._cv=cv;a.onclick=function(){openAlbum(al,a)};A.appendChild(a)})}
+ document.getElementById("aclose").onclick=closeAlbum;
+ AD.addEventListener("cancel",function(e){e.preventDefault();closeAlbum()});
+ AD.addEventListener("click",function(e){var t=e.target;if(t===AD||t.classList.contains("ablur")||t.classList.contains("awrap"))closeAlbum()});
  document.getElementById("pclose").onclick=function(){P.close()};
  document.getElementById("pprev").onclick=function(){open(idx-1)};
  document.getElementById("pnext").onclick=function(){open(idx+1)};
@@ -370,6 +415,44 @@ var albums=[
  if(!("IntersectionObserver" in window))return;
  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run(e.target);io.unobserve(e.target)}})},{threshold:.5});
  els.forEach(function(el){io.observe(el)});
+})();
+</script>
+<script>
+(function(){
+ var VD=document.getElementById("vdlg"),PN=document.getElementById("vpanel"),SL=document.getElementById("vslot"),PL=document.getElementById("vplayer"),CV=document.getElementById("vcover"),card=null,curK=-1,busy=false,tok=0;
+ function box(r){PN.style.left=r.left+"px";PN.style.top=r.top+"px";PN.style.width=r.width+"px";PN.style.height=r.height+"px"}
+ function reset(){PN.className="apanel";PN.removeAttribute("style");SL.style.width="";SL.style.height="";PL.innerHTML=""}
+ window.openVideo=function(w,a){
+  if(busy)return;busy=true;card=a;curK=works.indexOf(w);var my=++tok;
+  var p=(w.t||"").split(" | ");
+  document.getElementById("vtitle").textContent=p.length>1?p.slice(1).join(" | "):w.t;
+  document.getElementById("vcat").textContent=p.length>1?p[0]:"";
+  document.getElementById("vext").href=w.y||SHOW;
+  var vt=!!w.y&&!w.h,maxH=Math.max(240,innerHeight-190),maxW=innerWidth*.92,pw,ph;
+  if(vt){ph=Math.min(maxH,820);pw=ph*9/16;if(pw>maxW){pw=maxW;ph=pw*16/9}}
+  else{pw=Math.min(920,maxW);ph=pw*9/16;if(ph>maxH){ph=maxH;pw=ph*16/9}}
+  reset();
+  SL.style.width=pw+"px";SL.style.height=ph+"px";
+  PL.style.setProperty("--pw",pw+"px");PL.style.setProperty("--ph",ph+"px");
+  if(w.th){CV.src=w.th;CV.style.display=""}else{CV.removeAttribute("src");CV.style.display="none"}
+  VD.classList.remove("in");VD.showModal();
+  var pr=PN.getBoundingClientRect(),r=a.getBoundingClientRect();
+  PN.style.transition="none";PN.classList.add("fly");box(r);PN.style.borderRadius="12px";
+  a.style.visibility="hidden";void PN.offsetWidth;PN.style.transition="";
+  requestAnimationFrame(function(){requestAnimationFrame(function(){VD.classList.add("in");box(pr);PN.style.borderRadius=""})});
+  setTimeout(function(){if(my===tok&&VD.open)PL.innerHTML=emb(w.y||SHOW)},250);
+  setTimeout(function(){PN.classList.remove("fly");PN.removeAttribute("style");busy=false},650)};
+ function closeV(){
+  if(busy||!VD.open)return;busy=true;tok++;
+  var c=document.querySelector('.card[data-k="'+curK+'"]')||card;
+  var pr=PN.getBoundingClientRect(),r=c.getBoundingClientRect();
+  PN.style.transition="none";PN.classList.add("fly");box(pr);void PN.offsetWidth;PN.style.transition="";
+  VD.classList.remove("in");box(r);PN.style.borderRadius="12px";
+  setTimeout(function(){PL.innerHTML=""},200);
+  setTimeout(function(){VD.close();reset();c.style.visibility="";card.style.visibility="";busy=false},560)}
+ document.getElementById("vclose").onclick=closeV;
+ VD.addEventListener("cancel",function(e){e.preventDefault();closeV()});
+ VD.addEventListener("click",function(e){var t=e.target;if(t===VD||t.classList.contains("ablur")||t.classList.contains("awrap"))closeV()});
 })();
 </script>
 </body>
