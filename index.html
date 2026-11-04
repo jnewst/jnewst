@@ -21,6 +21,7 @@
 <meta name="twitter:title" content="สุทธิวัฒน์ จิตจำนงค์ | Video Editor &amp; Videographer">
 <meta name="twitter:description" content="ถ่ายทำ ตัดต่อ เกรดสี ครบจบในที่เดียว">
 <meta name="twitter:image" content="https://jnewst.github.io/jnewst/og-v2.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2306143f'/%3E%3Cstop offset='1' stop-color='%231741c4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpolygon points='25,19 25,45 46,32' fill='%23fff'/%3E%3C/svg%3E">
 <title>สุทธิวัฒน์ จิตจำนงค์ | Video Editor & Videographer</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600;700&display=swap">
 <style>
@@ -235,6 +236,19 @@ html{scroll-padding-top:76px}
 .js section.rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.32,.72,0,1)}
 .js section.rv.vis{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reel2 .rt,.card .poster.sk::after{animation:none}.js section.rv{opacity:1;transform:none;transition:none}}
+
+/* ===== UI/UX round 2 ===== */
+.filters{position:relative}
+.filters button{min-height:40px;padding:6px 16px;white-space:nowrap}
+.svc .ic{display:block;width:28px;height:28px;margin-bottom:12px;color:#7aa2ff;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:720px){
+ .filters{flex-wrap:nowrap;overflow-x:auto;margin:0 -22px 20px;padding:2px 22px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .filters::-webkit-scrollbar{display:none}
+ .filters button{flex:none}
+ body::after{display:none}
+ .adlg.in .ablur{-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
+ .adlg .apanel{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+}
 </style>
 </head>
 <body>
@@ -244,13 +258,13 @@ html{scroll-padding-top:76px}
 <div class="hero">
   <h1>ตัดต่อ ถ่ายทำ<br>และเก็บรายละเอียดทุกเฟรม</h1>
   <p>สุทธิวัฒน์ จิตจำนงค์ Video Editor / Videographer ในกรุงเทพฯ ดูแลงานวิดีโอครบทุกขั้นตอน ตั้งแต่วางภาพและถ่ายทำ ตัดต่อ เกรดสี ไปจนถึงส่งไฟล์พร้อมใช้งานบนทุกแพลตฟอร์ม</p>
-  <a class="btn" href="#works">ดูผลงาน</a><a class="btn o" href="#contact">ติดต่อจ้างงาน</a>
+  <a class="btn" href="#works">ดูผลงาน</a><a class="btn o" href="https://line.me/ti/p/kPOHMV6HEb" target="_blank" rel="noopener">ติดต่อจ้างงาน</a>
   <div class="reel2" id="reel2" aria-hidden="true"></div>
 <div class="stats" aria-label="สถิติโดยย่อ">
   <div><b class="num"><span data-stat="years" data-suffix="+" data-to="3">3+</span></b><small>ปีประสบการณ์ถ่ายทำและตัดต่อ</small></div>
   <div><b class="num"><span data-stat="works" data-to="22">22</span></b><small>วิดีโอในคลังผลงาน</small></div>
   <div><b class="num"><span data-stat="albums" data-to="3">3</span></b><small>อัลบั้มภาพนิ่ง</small></div>
-  <div><b class="num"><span data-stat="fields" data-to="2">2</span></b><small>สายงานหลัก: คลินิกความงามและอสังหาฯ</small></div>
+  <div><b class="num"><span data-stat="brands" data-to="3">3</span></b><small>แบรนด์และโครงการที่เคยร่วมงาน</small></div>
 </div>
 <div class="brands"><small>แบรนด์และโครงการที่เคยทำ</small><span>Dr.TATTOF</span><span>KC Grand Development</span><span>BioActive Plus</span></div>
 </div>
@@ -273,10 +287,10 @@ html{scroll-padding-top:76px}
   <h2>บริการ</h2>
   <p class="sub">รับงานวิดีโอครบจบในที่เดียว หรือเลือกเฉพาะขั้นตอนที่ต้องการ</p>
   <div class="svc">
-    <div><b>ถ่ายทำวิดีโอ</b><p>ถ่ายคอนเทนต์คลินิก สินค้า และโปรเจกต์อสังหาฯ วางมุมกล้องให้ตัดต่อง่าย</p></div>
-    <div><b>ตัดต่อ</b><p>คลิปสั้นแนวตั้ง โปรโมท รีวิว และวิดีโอแบรนด์ จัดจังหวะและเสียงให้ดูต่อเนื่อง</p></div>
-    <div><b>เกรดสีและแต่งภาพ</b><p>เกรดใน DaVinci Resolve ให้ผิวดูธรรมชาติ สะอาด และคุมโทนสีตามแบรนด์</p></div>
-    <div><b>โมชันกราฟิกและ AI Video</b><p>ไตเติล ข้อความบนจอ และภาพหรือคลิปที่สร้างด้วย AI สำหรับงานโปรโมท</p></div>
+    <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg><b>ถ่ายทำวิดีโอ</b><p>ถ่ายคอนเทนต์แบรนด์ สินค้า และโปรเจกต์ วางมุมกล้องและช็อตสำรองให้ตัดต่อง่าย</p></div>
+    <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1L20 20M8.1 15.9L20 4"/></svg><b>ตัดต่อ</b><p>คลิปสั้นแนวตั้ง โปรโมท รีวิว และวิดีโอแบรนด์ จัดจังหวะและเสียงให้ดูต่อเนื่อง</p></div>
+    <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><b>เกรดสีและแต่งภาพ</b><p>เกรดใน DaVinci Resolve ให้ผิวดูธรรมชาติ สะอาด และคุมโทนสีตามแบรนด์</p></div>
+    <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg><b>โมชันกราฟิกและ AI Video</b><p>ไตเติล ข้อความบนจอ และภาพหรือคลิปที่สร้างด้วย AI สำหรับงานโปรโมท</p></div>
   </div>
 </section>
 
@@ -298,16 +312,16 @@ html{scroll-padding-top:76px}
   <div class="about">
     <div>
       <div class="job"><b>Editor / Videographer, Dr.TATTOF</b><small>2025 ถึงปัจจุบัน</small>
-        <ul><li>ทำวิดีโอคลินิกเลเซอร์และความงาม</li><li>ถ่ายทำ ตัดต่อ และเกรดสีให้ได้โทนสะอาดตามแบรนด์</li><li>ผลิตภาพและวิดีโอด้วย AI สำหรับงานโปรโมท</li></ul></div>
+        <ul><li>ผลิตวิดีโอโปรโมท รีวิว และวิดีโอให้ความรู้สำหรับแบรนด์</li><li>ถ่ายทำ ตัดต่อ และเกรดสีให้ได้โทนสะอาดตามแบรนด์</li><li>ผลิตภาพและวิดีโอด้วย AI สำหรับงานโปรโมท</li></ul></div>
       <div class="job"><b>Editor / Videographer, KC Grand Development</b><small>2023 - 2025</small>
-        <ul><li>ถ่ายและตัดต่อวิดีโอโครงการอสังหาริมทรัพย์</li><li>ทำคอนเทนต์สำหรับโซเชียลของโครงการ</li></ul></div>
+        <ul><li>ถ่ายและตัดต่อวิดีโอแนะนำโครงการและคอนเทนต์ของบริษัท</li><li>ทำคอนเทนต์สำหรับโซเชียลของโครงการ</li></ul></div>
       <div class="job"><b>วท.บ. เทคโนโลยีมัลติมีเดียและแอนิเมชัน</b><small>มหาวิทยาลัยราชภัฏนครสวรรค์ · 2560 - 2565</small></div>
     </div>
     <div>
       <h3>ซอฟต์แวร์</h3>
       <div class="tools"><span>DaVinci Resolve</span><span>After Effects</span><span>Premiere Pro</span><span>Lightroom</span><span>CapCut</span></div>
       <h3>ถนัด</h3>
-      <div class="tools"><span>เกรดสี</span><span>คลิปแนวตั้ง</span><span>โมชันกราฟิก</span><span>AI Video</span><span>คลินิกความงาม</span><span>อสังหาฯ</span></div>
+      <div class="tools"><span>เกรดสี</span><span>คลิปแนวตั้ง</span><span>โมชันกราฟิก</span><span>AI Video</span><span>วิดีโอโฆษณา</span><span>สัมภาษณ์</span></div>
     </div>
   </div>
 </section>
@@ -315,7 +329,7 @@ html{scroll-padding-top:76px}
 <section id="contact" class="contact">
   <h2>ติดต่อ</h2>
   <p class="sub">มีงานหรืออยากคุยโปรเจกต์ ทักมาได้เลย</p>
-  <a class="btn" href="mailto:jitjumnew@gmail.com">อีเมล: jitjumnew@gmail.com</a><a class="btn o" href="tel:+66957137930">โทร: 095-713-7930</a><a class="btn o" href="https://line.me/ti/p/kPOHMV6HEb" target="_blank" rel="noopener">LINE</a><a class="btn o" href="https://www.instagram.com/jnxw.s?psln=MWlkempwNTc1dDA4Mw==" target="_blank" rel="noopener">Instagram: @jnxw.s</a>
+  <a class="btn" href="https://line.me/ti/p/kPOHMV6HEb" target="_blank" rel="noopener">ทักผ่าน LINE</a><a class="btn o" href="tel:+66957137930">โทร: 095-713-7930</a><a class="btn o" href="mailto:jitjumnew@gmail.com">อีเมล: jitjumnew@gmail.com</a><a class="btn o" href="https://www.instagram.com/jnxw.s?psln=MWlkempwNTc1dDA4Mw==" target="_blank" rel="noopener">Instagram: @jnxw.s</a>
 </section>
 <a class="linefab" href="https://line.me/ti/p/kPOHMV6HEb" target="_blank" rel="noopener" aria-label="ทักทาง LINE">ทัก LINE</a>
 <footer>© 2026 สุทธิวัฒน์ จิตจำนงค์ · กรุงเทพฯ</footer>
@@ -358,6 +372,7 @@ var cats=["ไฮไลต์","ทั้งหมด"].concat(works.map(functio
 var cur="ไฮไลต์",F=document.getElementById("filters"),G=document.getElementById("grid"),G2=document.getElementById("grid2"),D=document.getElementById("dlg"),B=document.getElementById("box");
 function render(){
  F.innerHTML="";cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){cur=c;render()};F.appendChild(b)});
+ var pr=F.querySelector('[aria-pressed="true"]');if(pr&&F.scrollWidth>F.clientWidth)F.scrollLeft=pr.offsetLeft-(F.clientWidth-pr.offsetWidth)/2;
  G.innerHTML="";G2.innerHTML="";works.forEach(function(w){if(cur==="ไฮไลต์"?!w.hl:(cur!=="ทั้งหมด"&&w.c!==cur))return;
   var a=document.createElement("button");a.className="card"+(w.h?" h":"");var g=w.g.split(",");
   var pp=w.t.split(" | "),nm=pp.length>1?pp.slice(1).join(" | "):w.t,ct=pp.length>1?pp[0]:"";
@@ -455,7 +470,7 @@ var albums=[
 <script>
 (function(){
  var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
- var vals={years:Math.max(1,new Date().getFullYear()-2023),works:works.length,albums:albums.length};
+ var vals={years:Math.max(1,new Date().getFullYear()-2023),works:works.length,albums:albums.length,brands:document.querySelectorAll(".brands span").length};
  var els=[].slice.call(document.querySelectorAll("[data-stat]"));
  els.forEach(function(el){var k=el.getAttribute("data-stat");if(vals[k]!=null)el.setAttribute("data-to",vals[k])});
  function fmt(el,n){el.textContent=n+(el.getAttribute("data-suffix")||"")}
