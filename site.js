@@ -73,7 +73,7 @@ var albums=[
   document.getElementById("atitle").textContent=al.t;document.getElementById("adesc").textContent=(al.d?al.d+" · ":"")+al.imgs.length+" ภาพ";
   document.getElementById("acover").src=al._cv||al.imgs[0].src;
   AM.innerHTML="";list=al.imgs;
-  list.forEach(function(p,i){var b=document.createElement("button");b.style.setProperty("--i",Math.min(i,18));b.innerHTML='<img src="'+esc(p.src)+'" alt="'+esc(p.t)+'" loading="lazy">';b.onclick=function(){open(i)};AM.appendChild(b)});
+  list.forEach(function(p,i){var b=document.createElement("button");b.style.setProperty("--i",Math.min(i,18));b.innerHTML='<img src="'+esc(p.src)+'" alt="'+esc(p.t)+'"'+(i<24?'':' loading="lazy"')+' decoding="async">';var im=b.firstChild;im.onload=function(){if(im.naturalWidth&&im.naturalHeight)b.style.setProperty("--r",(im.naturalWidth/im.naturalHeight).toFixed(4))};if(im.complete)im.onload();b.onclick=function(){open(i)};AM.appendChild(b)});
   reset();AD.classList.remove("in");AD.showModal();
   var pr=PN.getBoundingClientRect(),r=card.getBoundingClientRect();
   SL.style.height=pr.height+"px";

@@ -14,10 +14,11 @@
 .adlg .apanel.fly{position:fixed;margin:0;transition:left .55s var(--ease),top .55s var(--ease),width .55s var(--ease),height .55s var(--ease),border-radius .55s var(--ease)}
 .adlg .acover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:opacity .45s ease}
 .adlg.in .acover{opacity:0}
-.adlg .agrid{position:relative;max-height:calc(100vh - 170px);max-height:calc(100dvh - 170px);overflow:auto;overscroll-behavior:contain;padding:16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;opacity:0;transition:opacity .35s ease .2s}
+.adlg .agrid{position:relative;max-height:calc(100vh - 170px);max-height:calc(100dvh - 170px);overflow:auto;overscroll-behavior:contain;padding:16px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:10px;--h:150px;opacity:0;transition:opacity .35s ease .2s}
 .adlg.in .agrid{opacity:1}
-@media(min-width:720px){.adlg .agrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.adlg .agrid button{padding:0;border:0;border-radius:14px;overflow:hidden;aspect-ratio:1;cursor:pointer;background:#0a1330;opacity:0;transform:scale(.82);transition:opacity .4s ease,transform .55s var(--ease);transition-delay:calc(var(--i,0)*24ms + 240ms)}
+@media(min-width:720px){.adlg .agrid{--h:210px}}
+.adlg .agrid::after{content:"";flex:100 1 0}
+.adlg .agrid button{padding:0;border:0;border-radius:14px;overflow:hidden;aspect-ratio:var(--r,1);flex:var(--r,1) 1 calc(var(--r,1)*var(--h,150px));min-width:0;cursor:pointer;background:#0a1330;opacity:0;transform:scale(.82);transition:opacity .4s ease,transform .55s var(--ease);transition-delay:calc(var(--i,0)*24ms + 240ms)}
 .adlg.in .agrid button{opacity:1;transform:none}
 .adlg.in .agrid button:hover{transform:scale(1.04);transition-delay:0s}
 .adlg .agrid img{display:block;width:100%;height:100%;object-fit:cover}
