@@ -27,11 +27,16 @@ var works=[
 var SHOW="https://vimeo.com/showcase/12436496";
 function emb(u){if(!u)return"";var s,m;if(m=u.match(/vimeo\.com\/showcase\/(\d+)\/?(?:[?#].*)?$/i)){s="https://vimeo.com/showcase/"+m[1]+"/embed";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}if(m=u.match(/vimeo\.com\/(?:showcase\/\d+\/)?(?:video\/)?(\d+)(?:\/([a-z0-9]+))?/i)){s="https://player.vimeo.com/video/"+m[1]+"?autoplay=1"+(m[2]?"&h="+m[2]:"")}else if(m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)){s="https://www.youtube.com/embed/"+m[1]+"?autoplay=1"}else if(/^[\w-]{11}$/.test(u)){s="https://www.youtube.com/embed/"+u+"?autoplay=1"}else return"";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}
 var cats=["ไฮไลต์","ทั้งหมด"].concat(works.map(function(w){return w.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
-var cur="ไฮไลต์",F=document.getElementById("filters"),G=document.getElementById("grid"),G2=document.getElementById("grid2");
+var QT=[{l:"รีวิว",k:"รีวิว"},{l:"คลิปแนวตั้ง",k:"คลิปแนวตั้ง"},{l:"AI Video",k:"AI"},{l:"งานอีเวนต์",k:"งานอีเวนต์"},{l:"โฆษณา",k:"โฆษณา"}];
+var cur="ไฮไลต์",F=document.getElementById("filters"),G=document.getElementById("grid"),G2=document.getElementById("grid2"),Q=document.getElementById("quick");
+(function(){var h="";try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}if(cats.indexOf(h)>-1||h==="คลิปแนวตั้ง")cur=h})();
+function match(w,k){if(k==="ไฮไลต์")return!!w.hl;if(k==="ทั้งหมด")return true;if(k==="คลิปแนวตั้ง")return!w.h;return w.c===k}
+function setCur(c){cur=c;try{history.replaceState(null,"","#"+encodeURIComponent(c))}catch(e){}render()}
 function render(){if(!F)return;
- F.innerHTML="";cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){cur=c;render()};F.appendChild(b)});
+ F.innerHTML="";cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){setCur(c)};F.appendChild(b)});
+ if(Q){Q.innerHTML="<small>หมวดที่ลูกค้าหาบ่อย</small>";QT.forEach(function(t){var n=works.filter(function(w){return match(w,t.k)}).length,b=document.createElement("button");b.type="button";b.innerHTML=t.l+"<b>"+n+"</b>";b.setAttribute("aria-pressed",t.k===cur);b.onclick=function(){setCur(t.k===cur?"ทั้งหมด":t.k)};Q.appendChild(b)})}
  var pr=F.querySelector('[aria-pressed="true"]');if(pr&&F.scrollWidth>F.clientWidth)F.scrollLeft=pr.offsetLeft-(F.clientWidth-pr.offsetWidth)/2;
- G.innerHTML="";G2.innerHTML="";works.forEach(function(w){if(cur==="ไฮไลต์"?!w.hl:(cur!=="ทั้งหมด"&&w.c!==cur))return;
+ G.innerHTML="";G2.innerHTML="";works.forEach(function(w){if(!match(w,cur))return;
   var a=document.createElement("button");a.className="card"+(w.h?" h":"");var g=w.g.split(",");
   var pp=w.t.split(" | "),nm=pp.length>1?pp.slice(1).join(" | "):w.t,ct=pp.length>1?pp[0]:"";
   a.innerHTML='<div class="poster'+(w.th?'':' sk')+'" style="background:linear-gradient(135deg,'+g[0]+','+g[1]+')">'+(w.th?'<img src="'+w.th+'" alt="" loading="lazy">':'')+'<span class="play">▶</span>'+(w.dur?'<span class="badge">'+fmt(w.dur)+'</span>':'')+'</div><div class="t">'+(ct?'<small class="cat">'+ct+'</small>':'')+'<b>'+nm+'</b></div>';
@@ -42,10 +47,28 @@ function paint(w){var el=document.querySelector('.card[data-k="'+works.indexOf(w
  if(w.th&&!el.querySelector("img")){var im=new Image();im.alt="";im.style.opacity=0;im.onload=function(){im.style.opacity=1};im.src=w.th;el.insertBefore(im,el.firstChild)}
  if(w.dur&&!el.querySelector(".badge")){var b=document.createElement("span");b.className="badge";b.textContent=fmt(w.dur);el.appendChild(b)}}
 function marq(){var R=document.getElementById("reel2"),l=works.filter(function(w){return w.th});if(!R||l.length<6)return;
- var h=l.map(function(w){return'<img src="'+w.th+'" alt="" loading="lazy">'}).join("");R.innerHTML='<div class="rt">'+h+h+'</div>';R.classList.add("on")}
+ var h=l.map(function(w){return'<img src="'+w.th+'" alt="" draggable="false" decoding="async" style="aspect-ratio:'+(w.h?"16/9":"9/16")+'">'}).join("");
+ R.innerHTML='<div class="rt">'+h+h+h+'</div>';R.classList.add("on");reelInit(R)}
+function reelInit(R){
+ var T=R.firstChild,reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches,w=0,acc=0,last=0,hold=0,drag=false,sx=0,sl=0,vel=0,lx=0,lt=0;
+ function mw(){w=T.scrollWidth/3}
+ function wrap(){if(!w)return 0;var s=R.scrollLeft;if(s>=2*w){R.scrollLeft=s-w;return-w}if(s<=.5*w){R.scrollLeft=s+w;return w}return 0}
+ mw();R.scrollLeft=w;window.addEventListener("resize",function(){mw()});
+ function pause(ms){hold=performance.now()+(ms||1800)}
+ ["touchstart","touchmove","touchend","wheel","keydown"].forEach(function(ev){R.addEventListener(ev,function(){pause()},{passive:true})});
+ R.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse"||e.button)return;drag=true;sx=lx=e.clientX;sl=R.scrollLeft;lt=e.timeStamp;vel=0;hold=Infinity;try{R.setPointerCapture(e.pointerId)}catch(x){}R.classList.add("drag")});
+ R.addEventListener("pointermove",function(e){if(!drag)return;R.scrollLeft=sl-(e.clientX-sx);sl+=wrap();var dt=e.timeStamp-lt;if(dt>0)vel=.7*vel+.3*((e.clientX-lx)/dt*1000);lx=e.clientX;lt=e.timeStamp});
+ function end(e){if(!drag)return;drag=false;if(e&&e.timeStamp-lt>90)vel=0;pause();R.classList.remove("drag")}
+ R.addEventListener("pointerup",end);R.addEventListener("pointercancel",end);R.addEventListener("lostpointercapture",end);
+ function tick(t){var dt=last?Math.min(t-last,64):16;last=t;if(!w||w<100)mw();
+  if(!drag){if(Math.abs(vel)>8){R.scrollLeft-=vel*dt/1000;vel*=Math.pow(.003,dt/1000)}else if(!reduce&&t>hold){acc+=38*dt/1000;var s=Math.floor(acc);if(s>=1){R.scrollLeft+=s;acc-=s}}}
+  wrap();requestAnimationFrame(tick)}
+ requestAnimationFrame(tick)}
 function thumbs(){var pend=0;works.forEach(function(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)/);if(!m||w.tq)return;w.tq=1;pend++;
  fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+m[1])+"&width=640").then(function(r){return r.json()}).then(function(j){if(j){if(j.thumbnail_url)w.th=j.thumbnail_url;if(j.duration)w.dur=j.duration;paint(w)}}).catch(function(){}).then(function(){if(--pend===0)marq()})})}
 render();if(F||document.getElementById("reel2"))thumbs();
+(function(){var m=location.hash.match(/^#v-(\d+)$/);if(!m||!F)return;var k=-1;works.forEach(function(w,i){if(k<0&&(w.y||"").indexOf("/"+m[1])>-1)k=i});if(k<0)return;cur="ทั้งหมด";render();
+ setTimeout(function(){var c=document.querySelector('.card[data-k="'+k+'"]');if(c&&window.openVideo){c.scrollIntoView({block:"center",behavior:"instant"});setTimeout(function(){openVideo(works[k],c)},150)}},300)})();
 // ภาพนิ่งแบบอัลบั้ม: 1 อัลบั้ม = 1 การ์ด (1 โฟลเดอร์ใน images/)
 // วิธีที่ 1 (อัตโนมัติ): สร้างโฟลเดอร์ images/<ชื่อโฟลเดอร์>/ แล้วโยนรูปลงไป จากนั้นใส่ {t:"ชื่องาน",dir:"ชื่อโฟลเดอร์"} ด้านล่าง
 //   (ไม่ใส่ในรายการก็ได้ ระบบจะสร้างการ์ดให้เองโดยใช้ชื่อโฟลเดอร์เป็นชื่อ)
@@ -136,6 +159,7 @@ var albums=[
  els.forEach(function(el){io.observe(el)});
 })();
 (function(){if(!document.getElementById("vdlg"))return;
+ var curShare=null,prevHash="";
  var VD=document.getElementById("vdlg"),PN=document.getElementById("vpanel"),SL=document.getElementById("vslot"),PL=document.getElementById("vplayer"),CV=document.getElementById("vcover"),card=null,curK=-1,busy=false,tok=0;
  function box(r){PN.style.left=r.left+"px";PN.style.top=r.top+"px";PN.style.width=r.width+"px";PN.style.height=r.height+"px"}
  function reset(){PN.className="apanel";PN.removeAttribute("style");SL.style.width="";SL.style.height="";PL.innerHTML=""}
@@ -145,7 +169,9 @@ var albums=[
   document.getElementById("vtitle").textContent=p.length>1?p.slice(1).join(" | "):w.t;
   document.getElementById("vcat").textContent=p.length>1?p[0]:"";
   document.getElementById("vext").href=w.y||SHOW;
-  var vt=!!w.y&&!w.h,maxH=Math.max(240,innerHeight-190),maxW=innerWidth*.92,pw,ph;
+  var vid=((w.y||"").match(/vimeo\.com\/(\d+)/)||[])[1];curShare={t:w.t,id:vid};
+  if(vid){prevHash=location.hash.indexOf("#v-")===0?"":location.hash;try{history.replaceState(null,"","#v-"+vid)}catch(x){}}
+  var vt=!!w.y&&!w.h,maxH=Math.max(240,innerHeight-205),maxW=innerWidth*.92,pw,ph;
   if(vt){ph=Math.min(maxH,820);pw=ph*9/16;if(pw>maxW){pw=maxW;ph=pw*16/9}}
   else{pw=Math.min(920,maxW);ph=pw*9/16;if(ph>maxH){ph=maxH;pw=ph*16/9}}
   reset();
@@ -161,12 +187,18 @@ var albums=[
   setTimeout(function(){PN.classList.remove("fly");PN.removeAttribute("style");busy=false},650)};
  function closeV(){
   if(busy||!VD.open)return;busy=true;tok++;
+  if(curShare&&curShare.id){try{history.replaceState(null,"",prevHash||location.pathname+location.search)}catch(x){}}
   var c=document.querySelector('.card[data-k="'+curK+'"]')||card;
   var pr=PN.getBoundingClientRect(),r=c.getBoundingClientRect();
   PN.style.transition="none";PN.classList.add("fly");box(pr);void PN.offsetWidth;PN.style.transition="";
   VD.classList.remove("in");box(r);PN.style.borderRadius="12px";
   setTimeout(function(){PL.innerHTML=""},200);
   setTimeout(function(){VD.close();reset();c.style.visibility="";card.style.visibility="";busy=false},560)}
+ function toast(m){var t=document.getElementById("toast");if(!t){t=document.createElement("div");t.id="toast";t.setAttribute("role","status")}
+  (document.querySelector("dialog[open]")||document.body).appendChild(t);t.textContent=m;void t.offsetWidth;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("on")},2200)}
+ function copy(u){function fb(){var x=document.createElement("textarea");x.value=u;x.style.cssText="position:fixed;left:-999px;top:0";(document.querySelector("dialog[open]")||document.body).appendChild(x);x.select();try{document.execCommand("copy");toast("คัดลอกลิงก์แล้ว")}catch(e){toast("คัดลอกไม่ได้ ลองก๊อปจากแถบที่อยู่")}x.remove()}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){toast("คัดลอกลิงก์แล้ว")},fb)}else fb()}
+ var SB=document.getElementById("vshare");if(SB)SB.onclick=function(){if(curShare&&curShare.id)copy(location.origin+location.pathname+"#v-"+curShare.id)};
  document.getElementById("vclose").onclick=closeV;
  VD.addEventListener("cancel",function(e){e.preventDefault();closeV()});
  VD.addEventListener("click",function(e){var t=e.target;if(t===VD||t.classList.contains("ablur")||t.classList.contains("awrap"))closeV()});
@@ -181,3 +213,9 @@ var albums=[
  T.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("nav a"))set(false)});
  document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
  window.addEventListener("resize",function(){if(window.innerWidth>720)set(false)})})();
+(function(){if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;var H=document.documentElement;
+ window.addEventListener("pageshow",function(e){if(e.persisted)H.classList.remove("leaving")});
+ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+  if(a.target&&a.target!=="_self"||a.hasAttribute("download"))return;var u;try{u=new URL(a.href,location.href)}catch(x){return}
+  if(u.origin!==location.origin||(u.pathname===location.pathname&&u.search===location.search))return;
+  e.preventDefault();H.classList.add("leaving");setTimeout(function(){location.href=a.href},230)})})();

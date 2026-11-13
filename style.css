@@ -205,3 +205,64 @@ footer.ft{margin-top:96px;padding:40px 0 36px;background:var(--gray);color:var(-
 .fgrid a:hover{color:var(--ink);text-decoration:underline}
 .fine{margin:28px 0 0;padding-top:16px;border-top:1px solid var(--line)}
 @media(prefers-reduced-motion:reduce){.tile,.card,.ct,.btn{transition:none}.tile:hover,.card:hover,.ct:hover,.btn:hover{transform:none}html{scroll-behavior:auto}}
+
+/* ===== v3: shapes, marquee, quick tags, share, micro-interactions, transitions ===== */
+body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;background:
+ radial-gradient(520px 420px at 12% 10%,rgba(0,113,227,.10),transparent 70%),
+ radial-gradient(480px 400px at 88% 18%,rgba(123,92,255,.10),transparent 70%),
+ radial-gradient(520px 420px at 78% 82%,rgba(224,72,155,.08),transparent 70%),
+ radial-gradient(460px 380px at 8% 86%,rgba(52,199,220,.10),transparent 70%);animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(2.5%,-2%,0) scale(1.06)}}
+section,.hero{isolation:isolate}
+.hero{position:relative}
+.hero::before,.hero::after,.pg::before,.pg::after,.band::before{content:"";position:absolute;z-index:-1;pointer-events:none;border:1px solid rgba(255,255,255,.95);box-shadow:0 22px 50px -26px rgba(0,60,160,.35),inset 0 1px 0 #fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.hero::before{width:200px;height:200px;border-radius:50%;left:-70px;top:44px;background:linear-gradient(135deg,rgba(0,113,227,.20),rgba(123,92,255,.05));animation:flt 14s ease-in-out infinite alternate}
+.hero::after{width:150px;height:150px;border-radius:38px;right:-50px;top:130px;background:linear-gradient(135deg,rgba(224,72,155,.16),rgba(123,92,255,.06));transform:rotate(18deg);animation:flt2 17s ease-in-out infinite alternate}
+.pg::before{width:180px;height:180px;border-radius:50%;right:-60px;top:16px;background:linear-gradient(135deg,rgba(0,113,227,.18),rgba(52,199,220,.06));animation:flt 15s ease-in-out infinite alternate}
+.pg::after{width:110px;height:110px;border-radius:30px;left:-44px;top:170px;background:linear-gradient(135deg,rgba(224,72,155,.15),rgba(123,92,255,.05));transform:rotate(-14deg);animation:flt2 18s ease-in-out infinite alternate}
+.band::before{width:170px;height:170px;border-radius:46px;right:-44px;bottom:-24px;background:linear-gradient(135deg,rgba(123,92,255,.17),rgba(0,113,227,.05));transform:rotate(20deg);animation:flt2 16s ease-in-out infinite alternate}
+@keyframes flt{to{transform:translate3d(12px,-16px,0)}}
+@keyframes flt2{from{transform:rotate(16deg)}to{transform:translate3d(-10px,14px,0) rotate(26deg)}}
+/* interactive marquee */
+.reel2{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;cursor:grab;-webkit-user-select:none;user-select:none}
+.reel2::-webkit-scrollbar{display:none}
+.reel2.drag{cursor:grabbing}
+.reel2 .rt{animation:none}
+.reel2 img{-webkit-user-drag:none;object-fit:cover;background:var(--gray)}
+/* quick tags */
+.quick{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin:0 auto 18px}
+.quick small{width:100%;text-align:center;color:var(--mute);font-size:.82rem}
+.quick button{font:inherit;font-size:.92rem;min-height:40px;padding:6px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:border-color .2s ease,background .2s ease,box-shadow .3s ease,transform .3s var(--ease)}
+.quick button b{margin-left:7px;font-size:.78rem;font-weight:600;color:var(--mute)}
+.quick button:hover{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,.12)}
+.quick button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.quick button[aria-pressed=true] b{color:rgba(255,255,255,.85)}
+/* video share */
+.vdlg .vtools{display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:10px 16px;opacity:0;transition:opacity .3s ease}
+.vdlg.in .vtools{opacity:1;transition:opacity .4s ease .5s}
+.vdlg .vtools .vext{opacity:1;transition:none}
+.vshare{font:inherit;font-size:.85rem;min-height:36px;padding:4px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.16);color:#fff;cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .2s ease,transform .25s var(--ease)}
+.vshare:hover{background:rgba(255,255,255,.28)}
+.vshare:active{transform:scale(.96)}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));z-index:300;padding:10px 20px;border-radius:999px;background:rgba(29,29,31,.92);color:#fff;font-size:.9rem;transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .4s var(--ease)}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+/* micro-interactions */
+.cta,.btn,.linefab,.card,.tile,.ct,.quick button,.filters button{-webkit-tap-highlight-color:transparent}
+.cta:active,.btn:active,.linefab:active{transform:scale(.96)}
+.linefab{animation:ring 3.4s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 10px 30px -8px #06c755aa,0 0 0 0 rgba(6,199,85,.45)}70%,100%{box-shadow:0 10px 30px -8px #06c755aa,0 0 0 16px rgba(6,199,85,0)}}
+@media(hover:hover){
+ .card:hover{transform:scale(1.03);box-shadow:0 0 0 1px rgba(0,113,227,.28),0 24px 54px -20px rgba(0,113,227,.55)}
+ .cta:hover{transform:scale(1.05);box-shadow:0 0 0 4px rgba(0,113,227,.16),0 10px 26px -6px rgba(0,113,227,.65)}
+ .btn:not(.o):hover{box-shadow:0 0 0 4px rgba(0,113,227,.16),0 12px 28px -8px rgba(0,113,227,.6)}
+ .tile:hover,.ct:hover{box-shadow:0 0 0 1px rgba(0,113,227,.18),0 22px 50px -26px rgba(0,113,227,.45)}
+ .linefab:hover{box-shadow:0 0 0 5px rgba(6,199,85,.2),0 14px 34px -6px #06c755cc}
+}
+.card:active{transform:scale(.97)}
+/* page transitions */
+body{animation:pgin .45s ease backwards}
+main{animation:rise .6s var(--ease) backwards}
+@keyframes pgin{from{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}}
+html.leaving body{opacity:0;transition:opacity .22s ease}
+@media(prefers-reduced-motion:reduce){body,main,body::before,.hero::before,.hero::after,.pg::before,.pg::after,.band::before,.linefab{animation:none}html.leaving body{opacity:1;transition:none}}
