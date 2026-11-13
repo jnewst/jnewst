@@ -17,6 +17,7 @@ var works=[
  {t:"วิดีโอแนะนำโครงการ | บ้านเดี่ยวติดสวน",c:"วิดีโอแนะนำโครงการ",hl:1,y:"https://vimeo.com/1232306946",g:"#000,#1741c4"},
  {t:"วิดีโอแนะนำโครงการ | แนะนำโครงการ",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306945",g:"#06143f,#3d6bff"},
  {t:"สัมภาษณ์ | ผู้บริหารโครงการ K Grand Ville",c:"สัมภาษณ์",hl:1,y:"https://vimeo.com/982304860",g:"#06143f,#3d6bff"},
+ {t:"AI | ลบรอยหลุมสิว",c:"AI",y:"https://vimeo.com/1246513957",g:"#06143f,#3d6bff"},
  {t:"AI | ลบรอยด่างขาว",c:"AI",hl:1,y:"https://vimeo.com/1242782762",g:"#050a1f,#2b5cff"},
  {t:"AI | ปักหมุดโคราช",c:"AI",y:"https://vimeo.com/1232313794",g:"#000,#1741c4"},
  {t:"โฆษณา | ลบรอยสัก",c:"โฆษณา",hl:1,y:"https://vimeo.com/1232306469",h:1,g:"#000,#0f3a9c"},
@@ -174,3 +175,9 @@ var albums=[
  document.documentElement.classList.add("js");
  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("vis");io.unobserve(e.target)}})},{threshold:.06});
  document.querySelectorAll("section").forEach(function(x){x.classList.add("rv");io.observe(x)})})();
+(function(){var T=document.querySelector("header.top");if(!T)return;var B=T.querySelector(".mbtn");
+ function set(o){T.classList.toggle("open",o);if(B)B.setAttribute("aria-expanded",o?"true":"false")}
+ if(B)B.addEventListener("click",function(){set(!T.classList.contains("open"))});
+ T.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("nav a"))set(false)});
+ document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+ window.addEventListener("resize",function(){if(window.innerWidth>720)set(false)})})();
