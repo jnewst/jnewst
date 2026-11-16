@@ -117,8 +117,9 @@ section{position:relative;padding:72px 0 8px}
 .pg{padding-top:60px}
 /* home */
 .hero{text-align:center;padding:84px 22px 8px}
-.ico{display:inline-block;width:.86em;height:.86em;border-radius:.22em;vertical-align:-.06em;margin:0 .02em;background-color:#ececec;background-size:cover;background-position:center;box-shadow:0 0 0 .06em #fff,0 .15em .3em -.1em rgba(0,0,0,.35)}
-.ico+.ico{margin-left:-.28em}
+.icos{display:inline-flex;align-items:center;vertical-align:-.1em;margin:0 .1em;white-space:nowrap}
+.ico{display:block;flex:none;width:.86em;height:.86em;border-radius:.22em;margin:0;background-color:#ececec;background-size:cover;background-position:center;box-shadow:0 0 0 .06em #fff,0 .15em .3em -.1em rgba(0,0,0,.35)}
+.icos .ico+.ico{margin-left:-.3em}
 .ico:nth-of-type(3n+1){background-image:linear-gradient(135deg,#ffd9c7,#ffb4a0)}
 .ico:nth-of-type(3n+2){background-image:linear-gradient(135deg,#d9d2ff,#b3a6ff)}
 .ico:nth-of-type(3n){background-image:linear-gradient(135deg,#c9f0dc,#8fdcb9)}
