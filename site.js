@@ -46,8 +46,23 @@ function fmt(n){n=Math.round(n);return Math.floor(n/60)+":"+("0"+n%60).slice(-2)
 function paint(w){var el=document.querySelector('.card[data-k="'+works.indexOf(w)+'"] .poster');if(!el)return;el.classList.remove("sk");
  if(w.th&&!el.querySelector("img")){var im=new Image();im.alt="";im.style.opacity=0;im.onload=function(){im.style.opacity=1};im.src=w.th;el.insertBefore(im,el.firstChild)}
  if(w.dur&&!el.querySelector(".badge")){var b=document.createElement("span");b.className="badge";b.textContent=fmt(w.dur);el.appendChild(b)}}
-function fillIcons(){var I=document.querySelectorAll(".ico");if(!I.length)return;var l=works.filter(function(w){return w.th&&!w.h});if(!l.length)return;[].forEach.call(I,function(el,i){var w=l[Math.floor(i*l.length/I.length)];if(w)el.style.backgroundImage='url("'+w.th+'")'})}
-function marq(){fillIcons();var R=document.getElementById("reel2"),l=works.filter(function(w){return w.th});if(!R||l.length<6)return;
+function vid(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)/);return m?m[1]:""}
+function vhref(w){var v=vid(w);return v?"works.html#v-"+v:"works.html"}
+function buildDuo(){var A=document.getElementById("colA"),B=document.getElementById("colB");if(!A||!B)return;
+ var v=[];works.forEach(function(w,k){if(!w.h)v.push(k)});
+ function fill(col,ids){var h="";ids.concat(ids).forEach(function(k,i){var w=works[k],dup=i>=ids.length;h+='<a class="dt" href="'+vhref(w)+'" data-k="'+k+'"'+(dup?' aria-hidden="true" tabindex="-1"':' aria-label="'+w.t+'"')+'>'+(w.th?'<img src="'+w.th+'" alt="" loading="lazy">':'')+'</a>'});col.innerHTML='<div class="ct2">'+h+'</div>'}
+ fill(A,v.filter(function(k,i){return i%2===0}));fill(B,v.filter(function(k,i){return i%2===1}))}
+function fillDuo(){[].forEach.call(document.querySelectorAll(".dt"),function(a){var w=works[+a.dataset.k];if(w&&w.th&&!a.querySelector("img")){var im=new Image();im.alt="";im.src=w.th;a.appendChild(im)}})}
+function homeInit(){var T=document.getElementById("htabs"),R=document.getElementById("hrow");
+ if(T&&R){var cs=[];works.forEach(function(w){if(cs.indexOf(w.c)<0)cs.push(w.c)});var cur=cs[0];
+  var draw=function(){T.innerHTML="";cs.forEach(function(c){var b=document.createElement("button");b.type="button";b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){cur=c;draw()};T.appendChild(b)});
+   R.innerHTML="";works.forEach(function(w,k){if(w.c!==cur)return;var a=document.createElement("a");a.className="card"+(w.h?" h":"");a.href=vhref(w);a.dataset.k=k;
+    var pp=w.t.split(" | "),nm=pp.length>1?pp.slice(1).join(" | "):w.t;
+    a.innerHTML='<div class="poster'+(w.th?"":" sk")+'" style="background:linear-gradient(135deg,#ececec,#f6f6f6)">'+(w.th?'<img src="'+w.th+'" alt="" loading="lazy">':"")+'<span class="play">▶</span>'+(w.dur?'<span class="badge">'+fmt(w.dur)+"</span>":"")+'</div><div class="t"><b>'+nm+"</b></div>";R.appendChild(a)});
+   var all=document.getElementById("hall");if(all)all.href="works.html#"+encodeURIComponent(cur);R.scrollLeft=0};
+  draw()}
+ buildDuo()}
+function marq(){fillDuo();var R=document.getElementById("reel2"),l=works.filter(function(w){return w.th});if(!R||l.length<6)return;
  var h=l.map(function(w){return'<img src="'+w.th+'" alt="" draggable="false" decoding="async" style="aspect-ratio:'+(w.h?"16/9":"9/16")+'">'}).join("");
  R.innerHTML='<div class="rt">'+h+h+h+'</div>';R.classList.add("on");if(R.parentNode&&R.parentNode.classList)R.parentNode.classList.add("on");reelInit(R)}
 function reelInit(R){
@@ -67,7 +82,7 @@ function reelInit(R){
  requestAnimationFrame(tick)}
 function thumbs(){var pend=0;works.forEach(function(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)/);if(!m||w.tq)return;w.tq=1;pend++;
  fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+m[1])+"&width=640").then(function(r){return r.json()}).then(function(j){if(j){if(j.thumbnail_url)w.th=j.thumbnail_url;if(j.duration)w.dur=j.duration;paint(w)}}).catch(function(){}).then(function(){if(--pend===0)marq()})})}
-render();if(F||document.getElementById("reel2"))thumbs();
+render();homeInit();if(F||document.getElementById("reel2")||document.getElementById("htabs"))thumbs();
 (function(){var m=location.hash.match(/^#v-(\d+)$/);if(!m||!F)return;var k=-1;works.forEach(function(w,i){if(k<0&&(w.y||"").indexOf("/"+m[1])>-1)k=i});if(k<0)return;cur="ทั้งหมด";render();
  setTimeout(function(){var c=document.querySelector('.card[data-k="'+k+'"]');if(c&&window.openVideo){c.scrollIntoView({block:"center",behavior:"instant"});setTimeout(function(){openVideo(works[k],c)},150)}},300)})();
 // ภาพนิ่งแบบอัลบั้ม: 1 อัลบั้ม = 1 การ์ด (1 โฟลเดอร์ใน images/)
