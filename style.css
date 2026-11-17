@@ -55,12 +55,12 @@ dialog>button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 @media(prefers-reduced-motion:reduce){.reel2 .rt,.card .poster.sk::after{animation:none}.js section.rv{opacity:1;transform:none;transition:none}}
 .adlg{color:#f5f5f5}
 /* ===== Mobbin-style: monochrome canvas, black pills, soft cards ===== */
-:root{--bg:#f8f8f7;--soft:#ffffff;--ink:#1c1c1e;--mute:#636366;--line:#e2e2df;--on-ink:#fff;--glass:rgba(248,248,247,.85);--hover:#f0f0ee;--bd:#d6d6d6;--tilebd:#dedede;--tilebdh:#b5b5b5;--tileshadow:0 1px 2px rgba(28,28,30,.04),0 10px 26px -18px rgba(28,28,30,.22);--dot:rgba(28,28,30,.09);--ring:rgba(28,28,30,.10);--g:#8a8a8a;--accent:#1c1c1e;--ease:cubic-bezier(.32,.72,0,1);color-scheme:light}
-:root[data-theme=dark]{--bg:#111113;--soft:#1c1c1f;--ink:#f2f2f5;--mute:#9e9ea4;--line:#2e2e32;--on-ink:#111113;--glass:rgba(17,17,19,.85);--hover:#252529;--bd:#3a3a3f;--tilebd:#2e2e32;--tilebdh:#4a4a50;--tileshadow:0 1px 2px rgba(0,0,0,.35);--dot:rgba(255,255,255,.07);--ring:rgba(255,255,255,.08);--g:#6f6f76;color-scheme:dark}
+:root{--bg:#efefec;--soft:#fafaf8;--ink:#1c1c1e;--mute:#636366;--line:#e2e2df;--on-ink:#fff;--glass:rgba(239,239,236,.85);--hover:#e6e6e2;--bd:#d6d6d6;--tilebd:#cecec8;--tilebdh:#c85a32;--bw:1.5px;--tileshadow:0 6px 24px -8px rgba(0,0,0,.07);--dot:#b5b5ae;--dotr:1.25px;--dots:26px;--ring:rgba(28,28,30,.12);--g:#7d7d78;--accent:#c85a32;--ease:cubic-bezier(.32,.72,0,1);color-scheme:light}
+:root[data-theme=dark]{--bg:#111113;--soft:#1c1c1f;--ink:#f2f2f5;--mute:#9e9ea4;--line:#2e2e32;--on-ink:#111113;--glass:rgba(17,17,19,.85);--hover:#252529;--bd:#3a3a3f;--tilebd:#2e2e32;--tilebdh:#4a4a50;--tileshadow:0 1px 2px rgba(0,0,0,.35);--dot:rgba(255,255,255,.07);--dotr:1px;--dots:28px;--bw:1px;--accent:#e0714a;--ring:rgba(255,255,255,.08);--g:#6f6f76;color-scheme:dark}
 .adlg,dialog{--ink:#f5f5f5;--mute:#a3a3a3;--line:#2a2a2a;--panel:#141414}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background-color:var(--bg);background-image:radial-gradient(circle,var(--dot) 1px,transparent 1.3px);background-size:28px 28px;color:var(--ink);font-family:"Inter","Anuphan",-apple-system,BlinkMacSystemFont,"Segoe UI","Anuphan",system-ui,sans-serif;line-height:1.65;overflow-x:clip;-webkit-font-smoothing:antialiased}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(circle,var(--dot) var(--dotr),transparent calc(var(--dotr) + .3px));background-size:var(--dots) var(--dots);color:var(--ink);font-family:"Inter","Anuphan",-apple-system,BlinkMacSystemFont,"Segoe UI","Anuphan",system-ui,sans-serif;line-height:1.65;overflow-x:clip;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:8px}
 .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
@@ -272,7 +272,7 @@ p,.sub,.lead,.tile span,.stats small{text-wrap:pretty}
 .nw{white-space:nowrap}
 
 /* ===== soft neutral cards + dark mode ===== */
-.tile,.ct,.bento .bi,.steps>div{border:1px solid var(--tilebd);box-shadow:var(--tileshadow)}
+.tile,.ct,.bento .bi,.steps>div,.svc>div{border:var(--bw) solid var(--tilebd);box-shadow:var(--tileshadow)}
 .tile,.ct{transition:transform .45s var(--ease),border-color .25s ease,background .25s ease}
 .brand svg rect{fill:var(--ink)}.brand svg polygon{fill:var(--bg)}
 body::before,body::after{content:"";position:fixed;z-index:-1;pointer-events:none;width:min(62vw,540px);aspect-ratio:1;border:1px solid var(--ring);border-radius:50%;outline:1px solid var(--ring);outline-offset:54px}
@@ -289,3 +289,17 @@ body::after{bottom:-20vmin;left:-18vmin}
 [data-theme=dark] .dark .btn.o{background:transparent;color:#f2f2f5;border-color:#4a4a50}
 [data-theme=dark] .card .poster{background:#1c1c1f!important}
 [data-theme=dark] #toast{background:#2a2a2e;border:1px solid #3a3a3f}
+
+/* ===== accent + bento tags + thai wrapping ===== */
+.tile small,.ct small,.card .cat{color:var(--accent);font-weight:600}
+.avail{display:inline-flex;align-items:center;gap:8px;margin:0 0 22px;padding:5px 14px;border:var(--bw) solid var(--tilebd);border-radius:99px;background:var(--soft);font-size:.88rem;font-weight:500}
+.avail i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.tile .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding:24px 56px 0 0}
+.tile .tags span{padding:3px 12px;border:1px solid var(--tilebd);border-radius:99px;background:var(--bg);color:var(--ink);font-size:.85rem;max-width:none}
+.tile .tags b{display:inline;margin:0 0 0 6px;max-width:none;color:var(--accent);font-size:inherit;font-weight:600;letter-spacing:0}
+.tile b{text-wrap:balance}
+.tile b .nw{color:inherit;max-width:none}
+
+/* ===== smooth theme switch (class is only present for ~0.5s while toggling) ===== */
+@property --dot{syntax:"<color>";inherits:true;initial-value:#b5b5ae}
+html.theme-fx,html.theme-fx *,html.theme-fx *::before,html.theme-fx *::after{transition:background-color .4s ease,color .4s ease,border-color .4s ease,outline-color .4s ease,box-shadow .4s ease,fill .4s ease,stroke .4s ease,--dot .4s ease!important}
