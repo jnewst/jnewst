@@ -55,12 +55,12 @@ dialog>button{position:absolute;top:8px;right:8px;font:inherit;background:#fff;c
 @media(prefers-reduced-motion:reduce){.reel2 .rt,.card .poster.sk::after{animation:none}.js section.rv{opacity:1;transform:none;transition:none}}
 .adlg{color:#f5f5f5}
 /* ===== Mobbin-style: monochrome canvas, black pills, soft cards ===== */
-:root{--bg:#efefec;--soft:#fafaf8;--ink:#1c1c1e;--mute:#636366;--line:#e2e2df;--on-ink:#fff;--glass:rgba(239,239,236,.85);--hover:#e6e6e2;--bd:#d6d6d6;--tilebd:#cecec8;--tilebdh:#c85a32;--bw:1.5px;--tileshadow:0 6px 24px -8px rgba(0,0,0,.07);--dot:#b5b5ae;--dotr:1.25px;--dots:26px;--ring:rgba(28,28,30,.12);--g:#7d7d78;--accent:#c85a32;--ease:cubic-bezier(.32,.72,0,1);color-scheme:light}
-:root[data-theme=dark]{--bg:#111113;--soft:#1c1c1f;--ink:#f2f2f5;--mute:#9e9ea4;--line:#2e2e32;--on-ink:#111113;--glass:rgba(17,17,19,.85);--hover:#252529;--bd:#3a3a3f;--tilebd:#2e2e32;--tilebdh:#4a4a50;--tileshadow:0 1px 2px rgba(0,0,0,.35);--dot:rgba(255,255,255,.07);--dotr:1px;--dots:28px;--bw:1px;--accent:#e0714a;--ring:rgba(255,255,255,.08);--g:#6f6f76;color-scheme:dark}
+:root{--bg:#efefec;--soft:#fafaf8;--ink:#1c1c1e;--mute:#636366;--line:#e2e2df;--on-ink:#fff;--glass:rgba(239,239,236,.85);--hover:#e6e6e2;--bd:#d6d6d6;--tilebd:#cecec8;--tilebdh:#c85a32;--bw:1.5px;--tileshadow:0 6px 24px -8px rgba(0,0,0,.07);--geo:rgba(28,28,30,.13);--ring:rgba(28,28,30,.12);--g:#7d7d78;--accent:#c85a32;--ease:cubic-bezier(.32,.72,0,1);color-scheme:light}
+:root[data-theme=dark]{--bg:#111113;--soft:#1c1c1f;--ink:#f2f2f5;--mute:#9e9ea4;--line:#2e2e32;--on-ink:#111113;--glass:rgba(17,17,19,.85);--hover:#252529;--bd:#3a3a3f;--tilebd:#2e2e32;--tilebdh:#4a4a50;--tileshadow:0 1px 2px rgba(0,0,0,.35);--geo:rgba(255,255,255,.10);--bw:1px;--accent:#e0714a;--ring:rgba(255,255,255,.08);--g:#6f6f76;color-scheme:dark}
 .adlg,dialog{--ink:#f5f5f5;--mute:#a3a3a3;--line:#2a2a2a;--panel:#141414}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background-color:var(--bg);background-image:radial-gradient(circle,var(--dot) var(--dotr),transparent calc(var(--dotr) + .3px));background-size:var(--dots) var(--dots);color:var(--ink);font-family:"Inter","Anuphan",-apple-system,BlinkMacSystemFont,"Segoe UI","Anuphan",system-ui,sans-serif;line-height:1.65;overflow-x:clip;-webkit-font-smoothing:antialiased}
+body{margin:0;background-color:var(--bg);color:var(--ink);font-family:"Inter","Anuphan",-apple-system,BlinkMacSystemFont,"Segoe UI","Anuphan",system-ui,sans-serif;line-height:1.65;overflow-x:clip;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:8px}
 .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
@@ -292,8 +292,6 @@ body::after{bottom:-20vmin;left:-18vmin}
 
 /* ===== accent + bento tags + thai wrapping ===== */
 .tile small,.ct small,.card .cat{color:var(--accent);font-weight:600}
-.avail{display:inline-flex;align-items:center;gap:8px;margin:0 0 22px;padding:5px 14px;border:var(--bw) solid var(--tilebd);border-radius:99px;background:var(--soft);font-size:.88rem;font-weight:500}
-.avail i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
 .tile .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding:24px 56px 0 0}
 .tile .tags span{padding:3px 12px;border:1px solid var(--tilebd);border-radius:99px;background:var(--bg);color:var(--ink);font-size:.85rem;max-width:none}
 .tile .tags b{display:inline;margin:0 0 0 6px;max-width:none;color:var(--accent);font-size:inherit;font-weight:600;letter-spacing:0}
@@ -301,5 +299,15 @@ body::after{bottom:-20vmin;left:-18vmin}
 .tile b .nw{color:inherit;max-width:none}
 
 /* ===== smooth theme switch (class is only present for ~0.5s while toggling) ===== */
-@property --dot{syntax:"<color>";inherits:true;initial-value:#b5b5ae}
-html.theme-fx,html.theme-fx *,html.theme-fx *::before,html.theme-fx *::after{transition:background-color .4s ease,color .4s ease,border-color .4s ease,outline-color .4s ease,box-shadow .4s ease,fill .4s ease,stroke .4s ease,--dot .4s ease!important}
+html.theme-fx,html.theme-fx *,html.theme-fx *::before,html.theme-fx *::after{transition:background-color .5s ease,color .5s ease,border-color .5s ease,outline-color .5s ease,box-shadow .5s ease,fill .5s ease,stroke .5s ease!important}
+
+/* ===== architectural geometry: slow drift ===== */
+.geo{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.geo svg{position:absolute;fill:none;stroke:var(--geo);stroke-width:1.2;will-change:transform;animation:geodrift var(--d,18s) ease-in-out var(--dl,0s) infinite}
+.geo rect,.geo polygon{vector-effect:non-scaling-stroke}
+.geo .g1{width:clamp(70px,11vw,150px);top:12%;left:3%;--r:12deg;--d:19s;--dl:-4s}
+.geo .g2{width:clamp(60px,9vw,120px);right:4%;bottom:9%;--r:-10deg;--d:17s;--dl:-9s}
+.geo .g3{width:clamp(80px,12vw,160px);right:9%;top:26%;--r:8deg;--d:20s;--dl:-2s}
+.geo .g4{width:clamp(60px,9vw,120px);left:7%;bottom:18%;--r:-14deg;--d:16s;--dl:-11s}
+@keyframes geodrift{0%,100%{transform:translate(0,0) rotate(var(--r))}50%{transform:translate(22px,-30px) rotate(calc(var(--r) + 8deg))}}
+@media(prefers-reduced-motion:reduce){.geo svg{animation:none}}
