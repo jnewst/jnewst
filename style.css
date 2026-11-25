@@ -311,3 +311,8 @@ html.theme-fx,html.theme-fx *,html.theme-fx *::before,html.theme-fx *::after{tra
 .geo .g4{width:clamp(60px,9vw,120px);left:7%;bottom:18%;--r:-14deg;--d:16s;--dl:-11s}
 @keyframes geodrift{0%,100%{transform:translate(0,0) rotate(var(--r))}50%{transform:translate(22px,-30px) rotate(calc(var(--r) + 8deg))}}
 @media(prefers-reduced-motion:reduce){.geo svg{animation:none}}
+
+/* ===== album previews: show the whole photo, never cropped ===== */
+.card.album .poster img{object-fit:contain}
+#adlg .acover{object-fit:contain}
+.adlg .agrid img{object-fit:contain}
