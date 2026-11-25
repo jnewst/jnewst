@@ -16,6 +16,8 @@ var works=[
  {t:"วิดีโอความรู้ | หมอปรัช การเลือกหัวเลเซอร์ลบรอยสัก",c:"วิดีโอความรู้",y:"https://vimeo.com/1232307411",g:"#050a1f,#2b5cff"},
  {t:"วิดีโอแนะนำโครงการ | บ้านเดี่ยวติดสวน",c:"วิดีโอแนะนำโครงการ",hl:1,y:"https://vimeo.com/1232306946",g:"#000,#1741c4"},
  {t:"วิดีโอแนะนำโครงการ | แนะนำโครงการ",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1232306945",g:"#06143f,#3d6bff"},
+ {t:"วิดีโอแนะนำโครงการ | บ้านเดี่ยวชั้นเดียว โครงการ 3",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1249882614/4fd8378994",g:"#1c1c1f,#3a3a3f"},
+ {t:"วิดีโอแนะนำโครงการ | บ้านแฝดชั้นเดียว โครงการ 4",c:"วิดีโอแนะนำโครงการ",y:"https://vimeo.com/1249882616/30885fc75b",g:"#1c1c1f,#3a3a3f"},
  {t:"สัมภาษณ์ | ผู้บริหารโครงการ K Grand Ville",c:"สัมภาษณ์",hl:1,y:"https://vimeo.com/982304860",g:"#06143f,#3d6bff"},
  {t:"AI | ลบรอยหลุมสิว",c:"AI",y:"https://vimeo.com/1246513957",g:"#06143f,#3d6bff"},
  {t:"AI | ลบรอยด่างขาว",c:"AI",hl:1,y:"https://vimeo.com/1242782762",g:"#050a1f,#2b5cff"},
@@ -61,8 +63,8 @@ function homeInit(){var T=document.getElementById("htabs"),R=document.getElement
    var all=document.getElementById("hall");if(all)all.href="works.html#"+encodeURIComponent(cur);R.scrollLeft=0};
   draw()}
  buildBento()}
-function thumbs(){var pend=0;works.forEach(function(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)/);if(!m||w.tq)return;w.tq=1;pend++;
- fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+m[1])+"&width=640").then(function(r){return r.json()}).then(function(j){if(j){if(j.thumbnail_url)w.th=j.thumbnail_url;if(j.duration)w.dur=j.duration;paint(w)}}).catch(function(){})})}
+function thumbs(){var pend=0;works.forEach(function(w){var m=(w.y||"").match(/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?/i);if(!m||w.tq)return;w.tq=1;pend++;
+ fetch("https://vimeo.com/api/oembed.json?url="+encodeURIComponent("https://vimeo.com/"+m[1]+(m[2]?"/"+m[2]:""))+"&width=640").then(function(r){return r.json()}).then(function(j){if(j){if(j.thumbnail_url)w.th=j.thumbnail_url;if(j.duration)w.dur=j.duration;paint(w)}}).catch(function(){})})}
 render();homeInit();if(F||document.getElementById("bento")||document.getElementById("htabs"))thumbs();
 (function(){var m=location.hash.match(/^#v-(\d+)$/);if(!m||!F)return;var k=-1;works.forEach(function(w,i){if(k<0&&(w.y||"").indexOf("/"+m[1])>-1)k=i});if(k<0)return;cur="ทั้งหมด";render();
  setTimeout(function(){var c=document.querySelector('.card[data-k="'+k+'"]');if(c&&window.openVideo){c.scrollIntoView({block:"center",behavior:"instant"});setTimeout(function(){openVideo(works[k],c)},150)}},300)})();
