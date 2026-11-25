@@ -29,10 +29,10 @@ var works=[
 var SHOW="https://vimeo.com/showcase/12436496";
 function emb(u){if(!u)return"";var s,m;if(m=u.match(/vimeo\.com\/showcase\/(\d+)\/?(?:[?#].*)?$/i)){s="https://vimeo.com/showcase/"+m[1]+"/embed";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}if(m=u.match(/vimeo\.com\/(?:showcase\/\d+\/)?(?:video\/)?(\d+)(?:\/([a-z0-9]+))?/i)){s="https://player.vimeo.com/video/"+m[1]+"?autoplay=1"+(m[2]?"&h="+m[2]:"")}else if(m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)){s="https://www.youtube.com/embed/"+m[1]+"?autoplay=1"}else if(/^[\w-]{11}$/.test(u)){s="https://www.youtube.com/embed/"+u+"?autoplay=1"}else return"";return'<iframe src="'+s+'" allow="autoplay;fullscreen" allowfullscreen></iframe>'}
 var cats=["ไฮไลต์","ทั้งหมด"].concat(works.map(function(w){return w.c}).filter(function(v,i,a){return a.indexOf(v)===i}));
-var QT=[{l:"รีวิว",k:"รีวิว"},{l:"คลิปแนวตั้ง",k:"คลิปแนวตั้ง"},{l:"AI Video",k:"AI"},{l:"งานอีเวนต์",k:"งานอีเวนต์"},{l:"โฆษณา",k:"โฆษณา"}];
+var QT=[{l:"รีวิว",k:"รีวิว"},{l:"AI Video",k:"AI"},{l:"งานอีเวนต์",k:"งานอีเวนต์"},{l:"โฆษณา",k:"โฆษณา"}];
 var cur="ไฮไลต์",F=document.getElementById("filters"),G=document.getElementById("grid"),G2=document.getElementById("grid2"),Q=document.getElementById("quick");
-(function(){var h="";try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}if(cats.indexOf(h)>-1||h==="คลิปแนวตั้ง")cur=h})();
-function match(w,k){if(k==="ไฮไลต์")return!!w.hl;if(k==="ทั้งหมด")return true;if(k==="คลิปแนวตั้ง")return!w.h;return w.c===k}
+(function(){var h="";try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}if(cats.indexOf(h)>-1)cur=h})();
+function match(w,k){if(k==="ไฮไลต์")return!!w.hl;if(k==="ทั้งหมด")return true;return w.c===k}
 function setCur(c){cur=c;try{history.replaceState(null,"","#"+encodeURIComponent(c))}catch(e){}render()}
 function render(){if(!F)return;
  F.innerHTML="";cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===cur);b.onclick=function(){setCur(c)};F.appendChild(b)});
