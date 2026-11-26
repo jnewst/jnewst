@@ -1,0 +1,28 @@
+/* JNEW: Floating Pill navbar + Parallax background (ใช้ทุกหน้า) — โหลดต่อจาก style.css */
+:root:not([data-theme=dark]){--bg:#F6F5F2;--pg:rgba(255,255,255,.55);--pgh:rgba(255,255,255,.75);--pl:rgba(28,28,30,.12);--pi:#fffdf8;--pish:0 1px 4px rgba(40,30,10,.16),0 0 0 1px rgba(40,30,10,.05);--vf:28,28,30;--vfo:.075;--a1:#eadfc9;--a2:#d9dcdf;--a3:#efe2c8;--aop:.85}
+:root[data-theme=dark]{--pg:rgba(30,30,34,.55);--pgh:rgba(255,255,255,.08);--pl:rgba(255,255,255,.12);--pi:rgba(255,255,255,.16);--pish:none;--vf:255,255,255;--vfo:.06;--a1:#2b2a28;--a2:#23272c;--a3:#2a2620;--aop:.5}
+
+/* พื้นหลังเดิม (วงกลม/รูปทรง) ปิดไว้ ใช้ Viewfinder แทน */
+.geo,body::before,body::after{display:none!important}
+#vf{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+#vf .vl{position:absolute;inset:-60px;will-change:transform}
+#vf .au{filter:blur(90px);opacity:var(--aop)}
+#vf .au i{position:absolute;border-radius:50%;animation:vfflow 26s ease-in-out infinite alternate}
+#vf .au i:nth-child(1){width:46vw;height:46vw;left:4%;top:6%;background:var(--a1)}
+#vf .au i:nth-child(2){width:40vw;height:40vw;right:2%;top:30%;background:var(--a2);animation-duration:32s;animation-delay:-9s}
+#vf .au i:nth-child(3){width:34vw;height:34vw;left:34%;bottom:-6%;background:var(--a3);animation-duration:38s;animation-delay:-17s}
+@keyframes vfflow{to{transform:translate(8vw,-6vh) scale(1.18)}}
+#vf svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:rgb(var(--vf));stroke-opacity:var(--vfo);stroke-width:1}
+#vf svg *{vector-effect:non-scaling-stroke}
+
+#pind{display:none}
+@media(min-width:721px){
+ header.top::before{inset:0 0 -16px 0;background:linear-gradient(to bottom,var(--bg) 45%,transparent);-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:0}
+ .bar{height:76px}
+ .tgl{margin-left:auto}
+ header.top nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;padding:5px;gap:0;border-radius:999px;background:var(--pg);border:1px solid var(--pl);box-shadow:inset 0 1px 0 var(--pgh),0 8px 28px -14px rgba(0,0,0,.25);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3)}
+ header.top nav a{position:relative;z-index:1;padding:7px 18px;white-space:nowrap;background:none}
+ header.top nav a:hover,header.top nav a[aria-current]{background:none;color:var(--ink)}
+ #pind{display:block;position:absolute;z-index:0;top:5px;bottom:5px;left:0;width:0;border-radius:999px;background:var(--pi);box-shadow:var(--pish);opacity:0;transition:transform .55s cubic-bezier(.34,1.2,.5,1),width .55s cubic-bezier(.34,1.2,.5,1),opacity .3s;will-change:transform,width}
+}
+@media(prefers-reduced-motion:reduce){#vf .au i{animation:none}#pind{transition:none}}
