@@ -56,7 +56,7 @@ function buildReel(){var R=document.getElementById("reel");if(!R)return;
  var cards=list.map(function(k){var w=works[k],p=w.t.split(" | "),a=document.createElement("a");a.className="rc";a.href=vhref(w);a.dataset.k=k;a.draggable=false;a.setAttribute("aria-label",w.t);
   a.innerHTML='<span class="cap">'+(p.length>1?p.slice(1).join(" | "):w.t)+'</span><i class="pl" aria-hidden="true"></i>';R.appendChild(a);return a});
  if(!cards.length)return;
- var P=196,T=cards.length*P,s=0,vm=0,u=1,Wf=1440,drag=null,moved=0,vis=true,last=0,
+ var P=196,T=cards.length*P,s=0,vm=0,u=1,Wf=1440,drag=null,moved=0,dn=null,vis=true,last=0,
   still=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
  function rp(p,r){var n=p.length,d="";for(var i=0;i<n;i++){var a=p[(i+n-1)%n],b=p[i],c=p[(i+1)%n],
   x1=a[0]-b[0],y1=a[1]-b[1],x2=c[0]-b[0],y2=c[1]-b[1],l1=Math.hypot(x1,y1),l2=Math.hypot(x2,y2),k1=Math.min(r,l1/2)/l1,k2=Math.min(r,l2/2)/l2;
@@ -78,12 +78,12 @@ function buildReel(){var R=document.getElementById("reel");if(!R)return;
   requestAnimationFrame(tick)}
  size();draw();window.addEventListener("resize",function(){size();draw()});
  if(window.IntersectionObserver)new IntersectionObserver(function(es){vis=es[0].isIntersecting}).observe(R);
- R.addEventListener("pointerdown",function(e){if(e.button>0)return;drag={x:e.clientX,t:performance.now(),v:0};moved=0;vm=0;R.classList.add("drag");try{R.setPointerCapture(e.pointerId)}catch(x){}});
+ R.addEventListener("pointerdown",function(e){if(e.button>0)return;dn=e.target.closest?e.target.closest(".rc"):null;drag={x:e.clientX,t:performance.now(),v:0};moved=0;vm=0;R.classList.add("drag");try{R.setPointerCapture(e.pointerId)}catch(x){}});
  R.addEventListener("pointermove",function(e){if(!drag)return;var dx=e.clientX-drag.x,now=performance.now(),dt=Math.max(1,now-drag.t)/1000;
   moved+=Math.abs(dx);s-=dx/u;drag.v=.6*drag.v+.4*(-dx/u/dt);drag.x=e.clientX;drag.t=now;draw()});
  function up(){if(!drag)return;vm=Math.abs(drag.v)>20?drag.v:0;drag=null;R.classList.remove("drag")}
  R.addEventListener("pointerup",up);R.addEventListener("pointercancel",up);
- R.addEventListener("click",function(e){var a=e.target.closest(".rc");if(!a)return;e.preventDefault();if(moved>6||!window.openVideo)return;window.openVideo(works[+a.dataset.k],a)});
+ R.addEventListener("click",function(e){var a=e.target.closest(".rc")||(e.target===R?dn:null);if(!a)return;e.preventDefault();if(moved>6||!window.openVideo)return;window.openVideo(works[+a.dataset.k],a)});
  R.addEventListener("dragstart",function(e){e.preventDefault()});
  requestAnimationFrame(tick)}
 function fillBento(w){var a=document.querySelector('.rc[data-k="'+works.indexOf(w)+'"]');if(a&&w.th&&!a.querySelector("img")){var im=new Image();im.alt="";im.style.opacity=0;im.onload=function(){im.style.opacity=1};im.src=w.th;a.insertBefore(im,a.firstChild)}}
@@ -282,7 +282,7 @@ var albums=[
 (function(){var R=document.documentElement,K="jnew-theme",B=document.querySelector(".tgl"),mq=window.matchMedia&&matchMedia("(prefers-color-scheme:dark)");
  function cur(){return R.getAttribute("data-theme")==="dark"?"dark":"light"}
  function saved(){try{var v=localStorage.getItem(K);return v==="dark"||v==="light"?v:null}catch(e){return null}}
- function ui(){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",cur()==="dark"?"#111113":"#efefec");if(B)B.setAttribute("aria-label",cur()==="dark"?"เปลี่ยนเป็นโหมดสว่าง":"เปลี่ยนเป็นโหมดมืด")}
+ function ui(){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",cur()==="dark"?"#111113":"#F6F5F2");if(B)B.setAttribute("aria-label",cur()==="dark"?"เปลี่ยนเป็นโหมดสว่าง":"เปลี่ยนเป็นโหมดมืด")}
  var fxT,reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
  function set(t,keep,fx){if(fx&&!reduce&&t!==cur()){R.classList.add("theme-fx");clearTimeout(fxT);fxT=setTimeout(function(){R.classList.remove("theme-fx")},650)}R.setAttribute("data-theme",t);if(keep){try{localStorage.setItem(K,t)}catch(e){}}ui()}
  if(!B){var c=document.querySelector("header.top .cta");if(c){B=document.createElement("button");B.className="tgl";B.type="button";B.innerHTML='<svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';c.parentNode.insertBefore(B,c)}}
