@@ -15,7 +15,7 @@
 
  cardsEl.innerHTML=data.map(function(a,i){return'<button class="ss-card" type="button" data-i="'+i+'" aria-label="'+esc(a.t)+'"><img src="'+esc(a.cv)+'" alt="" loading="lazy"><em>'+a.imgs.length+' ภาพ</em><b>'+esc(a.t)+'</b><u aria-hidden="true">↗</u></button>'}).join("");
  var cards=[].slice.call(cardsEl.children);
- cards.forEach(function(c){var im=c.querySelector("img");im.onerror=function(){im.style.display="none"}});
+ cards.forEach(function(c){var im=c.querySelector("img");im.onerror=function(){im.style.display="none";console.warn("[photos] โหลดรูปปกไม่ได้:",im.getAttribute("src"))}});
 
  function drawDots(){var n=Math.min(data[ai].imgs.length,12);dots.innerHTML=data[ai].imgs.length>1?Array.apply(null,Array(n)).map(function(_,k){return'<i class="'+(k===si%12?"on":"")+'"></i>'}).join(""):""}
  /* โหลดรูปจริงก่อนค่อย Crossfade ชั้นหลัง (blur) และชั้นหน้า (contain) พร้อมกัน; รูปที่โหลดไม่ได้จะข้ามไปรูปถัดไป */
@@ -27,7 +27,7 @@
    stage.classList.remove("empty");var nx=1-layer;
    bk[nx].src=src;mn[nx].src=src;mn[nx].alt=a.t;
    bk[nx].classList.add("v");mn[nx].classList.add("v");bk[layer].classList.remove("v");mn[layer].classList.remove("v");layer=nx;drawDots()};
-  im.onerror=function(){if(id!==tk)return;a.bad[si]=1;si=(si+1)%n;slide(tries+1)};
+  im.onerror=function(){console.warn("[photos] โหลดรูปสไลด์ไม่ได้:",src);if(id!==tk)return;a.bad[si]=1;si=(si+1)%n;slide(tries+1)};
   im.src=src}
  function album(i,anim){
   ai=i;si=0;cards.forEach(function(c,k){c.classList.toggle("on",k===i);c.setAttribute("aria-pressed",k===i)});
@@ -58,7 +58,7 @@
    if(p.r){b.style.setProperty("--r",p.r);if(p.r>1.1)b.setAttribute("data-l","1")}
    var im=new Image();im.alt=p.t||"";im.decoding="async";if(k>=16)im.loading="lazy";
    im.onload=function(){if(im.naturalWidth&&im.naturalHeight){var r=im.naturalWidth/im.naturalHeight;b.style.setProperty("--r",r.toFixed(4));if(r>1.1)b.setAttribute("data-l","1");else b.removeAttribute("data-l")}};
-   im.onerror=function(){b.remove()};
+   im.onerror=function(){console.warn("[photos] โหลดรูปในแกลเลอรีไม่ได้:",p.src);b.remove()};
    im.src=p.src;b.appendChild(im);b.onclick=function(){openPhoto(i,k)};GG.appendChild(b)});
   GG.scrollTop=0;G.classList.remove("in");G.showModal();root.style.overflow="hidden";
   requestAnimationFrame(function(){requestAnimationFrame(function(){G.classList.add("in")})})}
